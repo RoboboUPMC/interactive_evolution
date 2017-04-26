@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/behavior_generator_options"
+        android:orientation="horizontal" >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/behavior_generator_reset"
+            android:text="@string/reset"
+            android:layout_weight="1"
+            android:onClick="onClickOptions"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/behavior_generator_nsbutton"
+            android:text="@string/nsbutton"
+            android:layout_weight="1"
+            android:onClick="onClickOptions"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/behavior_generator_optimiser"
+            android:text="@string/optimiser"
+            android:layout_weight="1"
+            android:onClick="onClickOptions"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/behavior_generator_end"
+            android:text="@string/goto_end"
+            android:layout_weight="1"
+            android:onClick="onClickOptions"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/behavior_generator_info_height">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/behavior_generator_info_hint"
+            android:enabled="false"
+            android:focusable="false"
+            android:id="@+id/behavior_generator_info_text"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/behavior_generator_list">
+            <!-- <include layout="@layout/behavior_example" /> -->
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
