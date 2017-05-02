@@ -306,11 +306,7 @@ public class RoboboPopulation {
 
 
     public RoboboPopulation noveltySearch(RoboboPopulation nspop){
-<<<<<<< HEAD
-       // this.purge(this.pop);
-=======
-        //this.purge();
->>>>>>> origin/master
+
         return null;
     }
 
