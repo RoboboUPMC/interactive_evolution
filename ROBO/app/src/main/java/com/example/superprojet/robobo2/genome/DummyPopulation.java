@@ -1,6 +1,7 @@
 package com.example.superprojet.robobo2.genome;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -159,8 +160,45 @@ public class DummyPopulation {
         }
 
         //
-        //A faire : utiliser le tableau d'adjacence pour générer l'enfant
+        // A faire : utiliser le tableau d'adjacence pour générer l'enfant
         //
+
+        ArrayList<Integer> child = new ArrayList<>();
+        Integer chosenMvmt;
+        Random r = new Random();
+        do {
+            chosenMvmt = r.nextInt(8);
+        }while(nbOcc.get(chosenMvmt) == 0);
+        Integer index = 0;
+        while(!nbOcc.equals(Arrays.asList(new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 }))){
+
+            // update of the number of occurrences table and adjacency table
+            child.add(index, chosenMvmt);
+            nbOcc.set(chosenMvmt, nbOcc.get(nbOcc.indexOf(chosenMvmt))-1);
+
+            // We list all the neighbors that have the maximum adjacency with our chosen point
+            for(int i = 0 ; i < 8 ; i++){
+                adjaTable[i][chosenMvmt] = nbOcc.get(nbOcc.indexOf(chosenMvmt)) == 0 ? 0 : adjaTable[i][chosenMvmt]-1;
+            }
+            ArrayList<Integer> candidates = new ArrayList<>();
+            Integer bestNeigh = 0;
+            for(int i = 0 ; i < 8 ; i++){
+                if(adjaTable[chosenMvmt][i] > adjaTable[chosenMvmt][bestNeigh]){
+                    candidates.clear();
+                    candidates.add(i);
+                    bestNeigh = adjaTable[chosenMvmt][i];
+                }
+                else if(adjaTable[chosenMvmt][i] == adjaTable[chosenMvmt][bestNeigh]){
+                    bestNeigh = adjaTable[chosenMvmt][i];
+                }
+            }
+
+            chosenMvmt = candidates.get(r.nextInt(candidates.size()));
+            index += r.nextInt(1);
+
+
+
+        }
 
     }
 
