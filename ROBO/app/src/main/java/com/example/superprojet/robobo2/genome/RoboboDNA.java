@@ -18,8 +18,15 @@ public class RoboboDNA {
 
     public RoboboDNA(RoboboManager roboboManager){
         this.roboboManager = roboboManager;
+        Integer seqSize = 10;
+        Random r = new Random();
+        for(int i = 0 ; i < seqSize ; i++){
+            genotype.add(new RoboboGene(roboboManager, RoboboGene.MvmtType.values()[r.nextInt(RoboboGene.MvmtType.values().length)]));
+        }
 
     }
+
+
 
     public void mutate(){
         int currSize = this.genotype.size();
@@ -66,6 +73,7 @@ public class RoboboDNA {
         }
 
     }
+
 
     public void setGenotype(ArrayList<RoboboGene> genotype) {
         this.genotype = genotype;
