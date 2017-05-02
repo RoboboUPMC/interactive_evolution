@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 Log.d("onClickOptions", "NS button");
                 LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
                 parent_list.clear();
-                for (counter = 0; counter < parent.getChildCount(); counter++) {
+                for (counter = parent.getChildCount()-1; counter >= 0; counter--) {
                     CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
                     if (checkBox.isChecked()) {
                         //chosen.add(myList.get(counter));

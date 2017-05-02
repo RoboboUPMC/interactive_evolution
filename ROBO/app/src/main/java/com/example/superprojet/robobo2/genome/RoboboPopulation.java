@@ -31,6 +31,11 @@ public class RoboboPopulation {
         this.pop = new ArrayList<>(pop);
     }
 
+    public void purge(ArrayList<Integer> parent_list)
+    {
+        //
+    }
+
     public int distLevenshtein(RoboboDNA individu_1) {
 
         int long1 = individu_1.getGenotype().size();
