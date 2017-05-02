@@ -33,9 +33,8 @@ public class RoboboPopulation {
 
     public void purge(ArrayList<Integer> parent_list)
     {
-        // received parent_list is already reversed
         int i;
-        for (i=0; i<this.pop.size(); i++)
+        for (i=this.pop.size()-1; i>=0; i--)
         {
             if(!parent_list.contains(i)) this.pop.remove(i);
         }
@@ -307,7 +306,7 @@ public class RoboboPopulation {
 
 
     public RoboboPopulation noveltySearch(RoboboPopulation nspop){
-        this.purge();
+        //this.purge();
         return null;
     }
 

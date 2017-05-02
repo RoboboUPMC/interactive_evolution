@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 Log.d("onClickOptions", "NS button");
                 LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
                 parent_list.clear();
-                for (counter = parent.getChildCount()-1; counter >= 0; counter--) {
+                for (counter = 0; counter < parent.getChildCount(); counter++) {
                     CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
                     if (checkBox.isChecked()) {
                         //chosen.add(myList.get(counter));
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     }
                 }
                 // insert real purpose here
-
+                roboPop.purge(parent_list);
                 /*
                 for (String s : chosen) {
                     //parent.removeView(parent.findViewById(i));
