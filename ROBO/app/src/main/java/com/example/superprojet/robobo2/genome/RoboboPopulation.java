@@ -31,36 +31,43 @@ public class RoboboPopulation {
         this.pop = new ArrayList<>(pop);
     }
 
-    public int distLevenshtein(RoboboDNA individu_1, RoboboDNA individu_2) {
+    public int distLevenshtein(RoboboDNA individu_1) {
 
         int long1 = individu_1.getGenotype().size();
-        int long2 = individu_2.getGenotype().size();
+        int min_val = Integer.MAX_VALUE;
+        for (RoboboDNA individu_2 : this.pop)
+        {
+            int long2 = individu_2.getGenotype().size();
 
-        int[][] d = new int[long1 + 1][long2 + 1];
-        int substitutionCost;
-        int deletionCost = 1;
-        int insertionCost = 1;
+            int[][] d = new int[long1 + 1][long2 + 1];
+            int substitutionCost;
+            int deletionCost = 1;
+            int insertionCost = 1;
 
-        for (int i = 0; i < d.length; i++) {
-            d[i][0] = i;
-        }
-
-        for (int j = 0; j < d[0].length; j++) {
-            d[0][j] = j;
-        }
-
-        for (int i = 0; i < d.length; i++) {
-            for (int j = 0; j < d[0].length; j++) {
-                if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
-                    substitutionCost = 0;
-                } else {
-                    substitutionCost = 1;
-                }
-                d[i][j] = Math.min(d[i - 1][j] + deletionCost, Math.min(d[i][j - 1] + insertionCost, d[i - 1][j - 1] + substitutionCost));
+            for (int i = 0; i < d.length; i++) {
+                d[i][0] = i;
             }
+
+            for (int j = 0; j < d[0].length; j++) {
+                d[0][j] = j;
+            }
+
+            for (int i = 0; i < d.length; i++) {
+                for (int j = 0; j < d[0].length; j++) {
+                    if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
+                        substitutionCost = 0;
+                    } else {
+                        substitutionCost = 1;
+                    }
+                    d[i][j] = Math.min(d[i - 1][j] + deletionCost, Math.min(d[i][j - 1] + insertionCost, d[i - 1][j - 1] + substitutionCost));
+                }
+            }
+
+            if (d[long1][long2] < min_val){min_val = d[long1][long2];}
         }
 
-        return d[long1][long2];
+        return min_val;
+
     }
 
     private class Edge {
