@@ -95,8 +95,8 @@ public class RoboboPopulation {
             d[0][j] = j;
         }
 
-        for (int i = 0; i < d.length; i++) {
-            for (int j = 0; j < d[0].length; j++) {
+        for (int i = 1; i < d.length; i++) {
+            for (int j = 1; j < d[0].length; j++) {
                 if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
                     substitutionCost = 0;
                 } else {
