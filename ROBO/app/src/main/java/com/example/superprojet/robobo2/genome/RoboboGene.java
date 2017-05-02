@@ -40,6 +40,7 @@ public class RoboboGene {
     }
 
     IRob rob;
+    RoboboManager roboboManager;
 
     MvmtType mvmtType;
 
@@ -51,6 +52,7 @@ public class RoboboGene {
     long duration;
 
     public RoboboGene(RoboboManager roboboManager, MvmtType d){
+        this.roboboManager = roboboManager;
         try {
             rob = roboboManager.getModuleInstance(BluetoothRobInterfaceModule.class).getRobInterface();
         } catch (ModuleNotFoundException e) {
@@ -164,6 +166,9 @@ public class RoboboGene {
         return mutated_gene;
     }
 
+    public RoboboManager getRoboboManager() {
+        return roboboManager;
+    }
 
     public MvmtType getMvmtType() {
         return mvmtType;
