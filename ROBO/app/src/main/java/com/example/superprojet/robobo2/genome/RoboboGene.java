@@ -147,6 +147,37 @@ public class RoboboGene {
 
     }
 
+    public void setMvmtType(MvmtType mvmtType) {
+        this.mvmtType = mvmtType;
+        switch (mvmtType){
+            case BACKWARDS:
+                mvmt = new MvmtBwd();
+                break;
+            case BACKWARDS_LEFT:
+                mvmt = new MvmtBwdLeft();
+                break;
+            case BACKWARDS_RIGHT:
+                mvmt = new MvmtBwdRight();
+                break;
+            case FORWARD:
+                mvmt = new MvmtFwd();
+                break;
+            case FORWARD_LEFT:
+                mvmt = new MvmtFwdLeft();
+                break;
+            case FORWARD_RIGHT:
+                mvmt = new MvmtFwdRight();
+                break;
+            case TURN_LEFT:
+                mvmt = new MvmtLeft();
+                break;
+            case TURN_RIGHT:
+                mvmt = new MvmtRight();
+                break;
+            default: break;
+        }
+    }
+
     private RoboboGene(IRob r){
         rob = r;
     }
