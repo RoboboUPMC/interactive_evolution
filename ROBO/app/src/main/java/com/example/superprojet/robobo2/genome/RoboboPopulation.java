@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Timer;
 
 /**
  * Created by Quentin on 2017/04/05.
@@ -335,9 +336,24 @@ public class RoboboPopulation {
     }
 
 
-    public RoboboPopulation noveltySearch(RoboboPopulation nspop){
+    public RoboboPopulation noveltySearch(RoboboPopulation nspop, ArrayList<Integer> parentList){
+        ArrayList<RoboboDNA> backupGen = new ArrayList<>(this.getPop());
+        this.purge(parentList);
+        ArrayList<RoboboDNA> offspring = new ArrayList<>();
+        RoboboPopulation newGen = new RoboboPopulation();
+        Integer nbTries = 0;
+        long start = System.currentTimeMillis();
 
-        return null;
+        while(offspring.size()<10 && System.currentTimeMillis() - start < 1000){
+            RoboboDNA child = xOver();
+            if(true){
+                offspring.add(child);
+                nspop.getPop().add(child);
+            }
+
+        }
+        newGen.setPop(offspring);
+        return newGen;
     }
 
 
