@@ -302,8 +302,8 @@ public class RoboboPopulation {
 
 
     public RoboboPopulation noveltySearch(RoboboPopulation nspop){
-        this.pop.purge();
-        
+        this.purge();
+        return null;
     }
 
 
