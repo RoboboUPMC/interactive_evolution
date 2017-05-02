@@ -216,4 +216,13 @@ public class RoboboGene {
     public MvmtType getMvmtType() {
         return mvmtType;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof RoboboGene)){
+            return false;
+        }
+        RoboboGene gene = (RoboboGene) obj;
+        return this.mvmtType == gene.mvmtType;
+    }
 }
