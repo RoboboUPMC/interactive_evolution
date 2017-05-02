@@ -1,0 +1,41 @@
+PROBLEME : Si lors d’une mutation tout gène peut muter en n’importe quel autre gène, 
+incluant le gène nul (cad que le gène est simplement retiré), cela veut dire que certaines 
+probabilités sont trop dépendantes de nombre de gènes différents et que ce nombre influence 
+aussi la taille de séquence moyenne.
+
+EXEMPLE : Si on a 4 gènes différents et une séquence de longueur 5 on a donc, lors de la 
+mutation, 1/6 de chance de rajouter 1 gène pouvant être vide, soit en réalité (1/6*4/5)=2/15 
+chance de rajouter un gène à un endroit de la séquence. On a par contre 1/5 chance d’enlever 
+n’importe quel gène muté, soit 1/6*1/5*5 (probabilité de mutation * probabilité de gène nul * 
+taille séquence) = 1/6 chance de perdre un gène. Avec les probabilités actuelles on arrive 
+donc à une longueur moyenne égale au nombre de gènes différents.
+
+BUT : On veut soit décider nous-même de la taille de séquence moyenne, soit faire en sorte 
+que les probabilité de gagner un gène soit égal à la probabilité d’en perdre un. Est-ce que 
+dans le deuxième pas on ne risque pas d’avoir des séquences qui deviennent trop courtes? 
+Non, ou en tout cas c’est assez improbable (pas au point d’être un problème) car NS va 
+rapidement éliminer les séquences trop courtes car trop semblables entre elles. On pourrait 
+d’ailleur démarrer avec la séquence vide en mémoire afin d’assurer qu’elle n’apparaisse pas 
+comme séquence possible.
+
+COMMENT :
+  Curr P(gain) = (1 / [len seq + 1]) * ([nb gène] / [nb gènes + 1])
+  Ideal P(gain) = (1 / [len seq + 1])
+  Curr P(loss) = (1 / [len seq + 1]) * [len seq] * (1 / [nb gènes + 1])
+  Ideal P(loss) = (1 / [len seq + 1]) * [len seq] * (1 / [len seq])
+On veut donc faire en sorte, par exemple, que la deuxième ligne reste égale à la première 
+ligne en changeant la dernière partie, soit en réduisant à (1 / [len seq]) la probabilité 
+qu’un gène puisse devenir le gène nul. En même temps il faut aussi faire en sorte que P(gain) 
+soit tel qu’il est ci-dessus, pour cela il faut donc réduire à 0 la probabilité d’obtenir 
+le gène nul si on est dans un cas de mutation de type ajout de gène. Cela revient à ajouter 
+une variable en entrée à la fonction de mutation égale à la probabilité d’obtention du gène nul.
+
+Nouveau problème et résolution :
+On se retrouve avec une séquence qui a beaucoup de chances de gagner ou perdre un gène si 
+elle est courte et de moins en moins plus elle s'allonge, en soit ce n’est pas forcément un 
+problème majeur (grâce au NS) mais on pourrait avoir envie de déterminer arbitrairement une 
+longueur moyenne de séquence. Pour ce faire il nous faut encore changer les probabilités.
+	New P(gain) = 1 - P(loss)
+	New P(loss) = (1 / [len seq + 1]) * [len seq] * Min( [len seq] / (2 * [ideal size]), 1 )
+La formule n'est pas parfaite mais elle fonctionne tant qu'on ne cherche pas à obtenir des 
+séquences trop courtes.

@@ -1,0 +1,106 @@
+CROSSOVER algo
+
+class occ_obj
+
+	gene_type gene
+	int occ_val
+
+class occ_list
+
+	array<occ_obj>
+
+
+	get_val(gene_type) :
+		return occ_val or 0 (if not in list)
+
+	get_all(int value) :
+		return list of genes with occ_val == value
+
+	sort() :
+		sort by greatest occ_val first
+
+	add1(gene_type) :
+		if in list add 1 to value, else add to list with value 1
+
+	sub1(gene_type) :
+		substract 1 to value of gene_type
+
+	sub2(gene_type) :
+		substract 2 to value of gene_type
+
+crossover (parent_list) :
+
+	randomGenerator = new Random();
+	parent_A = parent_list.get(randomGenerator.nextInt(parent_list.size()));
+	parent_B = parent_list.get(randomGenerator.nextInt(parent_list.size()));
+
+	if parent_A == parent_B (same pointer)
+		return copy(parent_A)
+
+	min_size = min(len(parent_A), len(parent_B))
+	max_size = max(len(parent_A), len(parent_B))
+
+	if max_size == minsize
+		child_size = min_size
+	else
+		child_size = randomGenerator.nextInt(max_size + 1 - min_size) + min_size
+
+	gene_list = new occ_list
+	child_gene_list = array<gene_type>
+	occurence_tab = new array<occ_list>
+
+	for p_gene in parent_A + parent_B
+		gene_list.add1(p_gene)
+
+	gene_list.sort()
+
+	for (i=0, i < child_size, i++)
+		candidates = gene_list.get_all(gene_list.get(0).occ_val)
+		chosen = select random candidate
+		child_gene_list.add1(chosen)
+		gene_list.sub2(chosen)
+		gene_list.sort()
+
+	for gene in child_gene_list
+		occurence_line = new occ_list
+		// for parent_A
+		for (i=0, i < len(parent_A), i++)
+			if parent_A[i] in child_gene_list
+				if parent_A[(i-1)%parent_A.size()] in child_gene_list
+					occurence_line.add1( parent_A[(i-1)%parent_A.size()] )
+				if parent_A[(i+1)%parent_A.size()] in child_gene_list
+					occurence_line.add1( parent_A[(i+1)%parent_A.size()] )
+		// same for parent_B
+
+		occurence_line.sort()
+		occurence_tab.add(occurence_line)
+
+	best_occ_list = make occ_list using maximum values in occurence_tab
+
+	child = new array<gene_type>
+	select random starting point i in gene_child_list
+
+	while (!child_gene_list.isEmpty())
+		//first consequences of choice
+		added_gene = child_gene_list[i]
+		child.add(added_gene)
+		if(child_gene_list.size() > 1)
+			for occ_line in occurence_tab
+				if occ_line.get_val(added_gene) == best_occ_list.get_val(added_gene)
+					occ_line.sub1(added_gene)
+					occ_line.sort()
+			best_occ_list.sub1(added_gene)
+		child_gene_list.remove(i)
+		occurence_tab.remove(i)
+
+		//next choice of i
+		if(!child_gene_list.isEmpty())
+			candidates = occurence_tab[i].get_all(occurence_tab[i].get(0).occ_val)
+			remove from candidates all not in child_gene_list
+			if candidates == null
+				i = randomGenerator.nextInt(child_gene_list.size())
+			else
+				gene_type next = new pick random from occurence_tab[i].get_all(occurence_tab[i].get(0).occ_val)
+				i = index of first occurence of 'next' in child_gene_list
+
+	return child
