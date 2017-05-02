@@ -342,11 +342,28 @@ public class RoboboPopulation {
         ArrayList<RoboboDNA> offspring = new ArrayList<>();
         RoboboPopulation newGen = new RoboboPopulation();
         Integer nbTries = 0;
+
+        Integer safeDistance = Integer.MAX_VALUE;
+        for(RoboboDNA parent : this.pop){
+            Integer k = minLevenstein(parent);
+            if(k < safeDistance){
+                safeDistance = k;
+            }
+        }
+
+
         long start = System.currentTimeMillis();
 
-        while(offspring.size()<10 && System.currentTimeMillis() - start < 1000){
+        while(offspring.size()<10 && System.currentTimeMillis() - start < 1000L){
             RoboboDNA child = xOver();
-            if(true){
+            Boolean newEnough = true;
+            for(RoboboDNA other : nspop.getPop()){
+                if(distLevenshtein(child, other) < safeDistance){
+                    newEnough = false;
+                    break;
+                }
+            }
+            if(newEnough){
                 offspring.add(child);
                 nspop.getPop().add(child);
             }
