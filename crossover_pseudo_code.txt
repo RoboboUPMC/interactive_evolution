@@ -90,17 +90,19 @@ crossover (parent_list) :
 					occ_line.sub1(added_gene)
 					occ_line.sort()
 			best_occ_list.sub1(added_gene)
+
+		candidates = occurence_tab[i].get_all(occurence_tab[i].get(0).occ_val)
 		child_gene_list.remove(i)
 		occurence_tab.remove(i)
 
 		//next choice of i
 		if(!child_gene_list.isEmpty())
-			candidates = occurence_tab[i].get_all(occurence_tab[i].get(0).occ_val)
+			
 			remove from candidates all not in child_gene_list
 			if candidates == null
 				i = randomGenerator.nextInt(child_gene_list.size())
 			else
-				gene_type next = new pick random from occurence_tab[i].get_all(occurence_tab[i].get(0).occ_val)
+				gene_type next = new pick random from candidates
 				i = index of first occurence of 'next' in child_gene_list
 
 	return child
