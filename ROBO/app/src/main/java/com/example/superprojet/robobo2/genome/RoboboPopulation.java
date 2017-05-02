@@ -86,7 +86,7 @@ public class RoboboPopulation {
         return parent;
     }
 
-    public void xOver(){
+    public RoboboDNA xOver(){
 
         RoboboDNA p1 = choisirParent();
         RoboboDNA p2 = choisirParent();
@@ -268,7 +268,7 @@ public class RoboboPopulation {
 
         }
 
-        this.pop.add(new RoboboDNA(p1.getGenotype().get(0).getRoboboManager(), child));
+        return new RoboboDNA(p1.getGenotype().get(0).getRoboboManager(), child);
 
     }
 
