@@ -14,10 +14,6 @@ public class RoboboPopulation {
 
     ArrayList<RoboboDNA> pop = new ArrayList<>();
 
-    public void xOver(){
-
-
-    }
 
     public int distLevenshtein(RoboboDNA individu_1, RoboboDNA individu_2) {
 
@@ -90,7 +86,11 @@ public class RoboboPopulation {
         return parent;
     }
 
-    public void xOver(RoboboDNA p1, RoboboDNA p2){
+    public void xOver(){
+
+        RoboboDNA p1 = choisirParent();
+        RoboboDNA p2 = choisirParent();
+
 
         // Class : movement type Integer[] : max number of adjacencies, mean number of occurrences
         HashMap<Class, Float[]> maxOcc = new HashMap<>(8);
