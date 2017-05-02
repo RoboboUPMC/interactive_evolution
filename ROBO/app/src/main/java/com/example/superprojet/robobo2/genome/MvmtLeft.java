@@ -16,7 +16,7 @@ public class MvmtLeft extends RoboboMvmt {
     }
 
     public MvmtLeft(){
-        super(80, 80, 200L);
+        super(80, 80);
         direction = MoveMTMode.REVERSE_FORWARD;
     }
 

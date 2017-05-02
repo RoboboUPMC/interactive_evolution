@@ -14,7 +14,7 @@ public class MvmtFwdRight extends RoboboMvmt {
     }
 
     public MvmtFwdRight(){
-        super(0, 80, 200L);
+        super(0, 80);
         direction = MoveMTMode.FORWARD_FORWARD;
     }
 
