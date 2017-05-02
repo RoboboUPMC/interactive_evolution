@@ -22,6 +22,7 @@ import com.mytechia.robobo.rob.movement.IRobMovementModule;
 import com.mytechia.robobo.util.Color;
 
 import java.util.Collection;
+import java.util.Random;
 
 /**
  * Created by Quentin on 2017/04/04.
@@ -192,9 +193,15 @@ public class RoboboGene {
     }
 
     public RoboboGene mutate(){
-        RoboboGene mutated_gene = new RoboboGene(rob);
+        RoboboGene mutatedGene = new RoboboGene(rob);
+        Random random = new Random();
+        MvmtType newMvmt;
+        int r = 0;
 
-        return mutated_gene;
+        r = random.nextInt(MvmtType.values().length);
+        newMvmt = MvmtType.values()[r];
+
+        return mutatedGene;
     }
 
     public RoboboManager getRoboboManager() {
