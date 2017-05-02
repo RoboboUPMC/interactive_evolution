@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 {
                     //roboPopInit
                     roboPop.init(basicPopSize, roboboManager);
-                    NSpop = new ArrayList<>(roboPop.getPop());
+                    NSpop.setPop(roboPop.getPop());
                     roboPopInit = true;
                     Log.d("onClickMain", "initialize RoboPop");
                 }
