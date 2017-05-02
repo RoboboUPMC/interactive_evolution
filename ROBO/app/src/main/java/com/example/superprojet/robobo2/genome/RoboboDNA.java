@@ -72,6 +72,7 @@ public class RoboboDNA {
     }
 
     public void exec(){
+
         for(RoboboGene gene: this.getGenotype()){
             gene.exec();
         }

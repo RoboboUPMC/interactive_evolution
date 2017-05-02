@@ -111,7 +111,7 @@ public class RoboboGene {
         });
 
         try {
-            rob.setRobStatusPeriod(50); // les statuts du robot sont vérifiés toutes les 50ms
+            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
         } catch (InternalErrorException e) {
             e.printStackTrace();
         }
@@ -187,7 +187,12 @@ public class RoboboGene {
         try {
             rob.setOperationMode((byte) 1);
             rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
+            while(rightVelocity!=0 || leftVelocity!=0){
+                Thread.sleep(10L);// on attend que le robot ait terminé son action
+            }
         } catch (InternalErrorException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
