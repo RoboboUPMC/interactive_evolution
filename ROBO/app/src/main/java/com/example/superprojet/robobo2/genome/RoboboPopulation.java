@@ -337,7 +337,6 @@ public class RoboboPopulation {
 
 
     public RoboboPopulation noveltySearch(RoboboPopulation nspop, ArrayList<Integer> parentList){
-        ArrayList<RoboboDNA> backupGen = new ArrayList<>(this.getPop());
         this.purge(parentList);
         ArrayList<RoboboDNA> offspring = new ArrayList<>();
         RoboboPopulation newGen = new RoboboPopulation();
@@ -369,7 +368,7 @@ public class RoboboPopulation {
             }
 
         }
-        newGen.setPop(offspring);
+        newGen.setPop((!offspring.isEmpty()?offspring:this.pop));
         return newGen;
     }
 
