@@ -272,6 +272,7 @@ public class RoboboPopulation {
 
     }
 
-
-
+    public ArrayList<RoboboDNA> getPop() {
+        return pop;
+    }
 }

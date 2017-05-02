@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.superprojet.robobo2.genome.RoboboPopulation;
 import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
 
@@ -58,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
     public RoboboManager roboboManager;
     public RoboboApp app;
+
+    public RoboboPopulation roboPop;
+    public Boolean roboPopInit;
+    public ArrayList<Integer> parent_list;
 
 
     /**************************Connection Bluetooth*************************************/
@@ -212,6 +217,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         setContentView(R.layout.activity_main);
         atMainview = true;
 
+        roboPop = new RoboboPopulation();
+        roboPopInit = false;
+        parent_list = new ArrayList<Integer>();
+
 
 
         myList.add("tralala");
@@ -251,13 +260,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         params.height = size.y / 10;
 
         int counter;
+        //for (counter = 0; counter < roboPop.getPop().size(); counter++) {
         for (counter = 0; counter < myList.size(); counter++) {
             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
 
             child.setId(pos);
             child.setLayoutParams(params);
             EditText editText = (EditText) child.findViewById(R.id.theTextField);
-            editText.setText(myList.get(pos));
+            editText.setText("Behavior " + counter);
             pos++;
 
             parent.addView(child);
@@ -268,6 +278,12 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         switch (button.getId()) {
             case R.id.main_activity_goto_bg :
+                if (!roboPopInit)
+                {
+                    //roboPopInit
+                    //roboPopInit = true;
+                    Log.d("onClickMain", "initialize RoboPop");
+                }
                 displayBGen(button);
                 break;
             case R.id.main_activity_run_test :
@@ -286,24 +302,42 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
     public void onClickOptions(View button) {
         int counter;
-        ArrayList<String> chosen = new ArrayList<>();
+        //ArrayList<String> chosen = new ArrayList<>();
         switch (button.getId()) {
+            case R.id.behavior_generator_reset :
+                Log.d("onClickOptions", "Reset button");
+                //roboPopInit
+                break;
             case R.id.behavior_generator_nsbutton :
                 Log.d("onClickOptions", "NS button");
                 LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
+                parent_list.clear();
                 for (counter = 0; counter < parent.getChildCount(); counter++) {
                     CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
                     if (checkBox.isChecked()) {
-                        //chosen.add(((View)checkBox.getParent()).getId());
-                        chosen.add(myList.get(counter));
+                        //chosen.add(myList.get(counter));
+                        parent_list.add(counter);
                     }
                 }
                 // insert real purpose here
+
+                /*
                 for (String s : chosen) {
                     //parent.removeView(parent.findViewById(i));
                     myList.remove(s);
                 }
+                */
                 displayBGen(button);
+                Log.d("onClickOptions", parent_list.toString());
+                break;
+            case R.id.behavior_generator_optimiser :
+                Log.d("onClickOptions", "Optimize button");
+                //does nothing for now
+                break;
+            case R.id.behavior_generator_end :
+                Log.d("onClickOptions", "End button");
+                // saves the selected behavior to a file
+                // displays a popup, clears all behaviors, sets roboPopInit = false
                 break;
             default :
                 Log.d("onClickOptions", "went to default");
