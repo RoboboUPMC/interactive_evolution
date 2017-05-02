@@ -9,4 +9,8 @@
     <string name="goto_bg_button">behavior generator</string>
     <string name="run_test_button">run test</string>
     <string name="bluetooth_button">connect bluetooth</string>
+    <string name="resetPopupTitle">Reset population</string>
+    <string name="resetPopupContent">This will reset the entire population to a new random one. Are you sure this is what you want?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 </resources>

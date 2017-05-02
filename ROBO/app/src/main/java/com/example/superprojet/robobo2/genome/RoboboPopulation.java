@@ -1,5 +1,7 @@
 package com.example.superprojet.robobo2.genome;
 
+import com.mytechia.robobo.framework.RoboboManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +16,20 @@ public class RoboboPopulation {
 
     ArrayList<RoboboDNA> pop = new ArrayList<>();
 
+
+    public void init(int popSize, RoboboManager roboboManager)
+    {
+        pop.clear();
+        int i;
+        for (i = 0; i < popSize; i++)
+        {
+            pop.add(new RoboboDNA(roboboManager));
+        }
+    }
+
+    public void setPop(ArrayList<RoboboDNA> pop) {
+        this.pop = new ArrayList<>(pop);
+    }
 
     public int distLevenshtein(RoboboDNA individu_1, RoboboDNA individu_2) {
 

@@ -1,7 +1,9 @@
 package com.example.superprojet.robobo2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.example.superprojet.robobo2.genome.RoboboDNA;
 import com.example.superprojet.robobo2.genome.RoboboPopulation;
 import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
@@ -60,9 +63,12 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     public RoboboManager roboboManager;
     public RoboboApp app;
 
+    public RoboboPopulation NSpop;
     public RoboboPopulation roboPop;
     public Boolean roboPopInit;
     public ArrayList<Integer> parent_list;
+    private AlertDialog resetPopup;
+    private int basicPopSize = 10;
 
 
     /**************************Connection Bluetooth*************************************/
@@ -220,6 +226,29 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         roboPop = new RoboboPopulation();
         roboPopInit = false;
         parent_list = new ArrayList<Integer>();
+        NSpop = new RoboboPopulation();// maybe not needed here
+
+        // generating popups
+        // RESET
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.resetPopupContent)
+                .setTitle(R.string.resetPopupTitle);
+        builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                roboPop.init(basicPopSize, roboboManager);
+                NSpop.setPop(roboPop.getPop());
+                displayBGen(findViewById(R.id.behavior_generator_reset));
+                dialog.dismiss();
+            }
+        });
+        resetPopup = builder.create();
 
 
 
@@ -260,14 +289,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         params.height = size.y / 10;
 
         int counter;
-        //for (counter = 0; counter < roboPop.getPop().size(); counter++) {
-        for (counter = 0; counter < myList.size(); counter++) {
+        for (counter = 0; counter < roboPop.getPop().size(); counter++) {
+        //for (counter = 0; counter < myList.size(); counter++) {
             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
 
             child.setId(pos);
             child.setLayoutParams(params);
             EditText editText = (EditText) child.findViewById(R.id.theTextField);
-            editText.setText("Behavior " + counter);
+            editText.setText("Behavior " + (counter+1));
             pos++;
 
             parent.addView(child);
@@ -281,7 +310,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 if (!roboPopInit)
                 {
                     //roboPopInit
-                    //roboPopInit = true;
+                    roboPop.init(basicPopSize, roboboManager);
+                    NSpop = new ArrayList<>(roboPop.getPop());
+                    roboPopInit = true;
                     Log.d("onClickMain", "initialize RoboPop");
                 }
                 displayBGen(button);
@@ -306,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         switch (button.getId()) {
             case R.id.behavior_generator_reset :
                 Log.d("onClickOptions", "Reset button");
-                //roboPopInit
+                resetPopup.show();
                 break;
             case R.id.behavior_generator_nsbutton :
                 Log.d("onClickOptions", "NS button");
