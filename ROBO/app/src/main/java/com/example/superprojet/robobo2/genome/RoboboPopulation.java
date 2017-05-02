@@ -301,6 +301,11 @@ public class RoboboPopulation {
     }
 
 
+    public RoboboPopulation noveltySearch(RoboboPopulation nspop){
+        this.pop.purge();
+        
+    }
+
 
     public ArrayList<RoboboDNA> getPop() {
         return pop;
