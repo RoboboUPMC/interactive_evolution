@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     }
                 }
                 // insert real purpose here
-                roboPop.purge(parent_list);
+                roboPop = roboPop.noveltySearch(NSpop, parent_list);
                 /*
                 for (String s : chosen) {
                     //parent.removeView(parent.findViewById(i));
