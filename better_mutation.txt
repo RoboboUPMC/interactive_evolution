@@ -36,6 +36,6 @@ elle est courte et de moins en moins plus elle s'allonge, en soit ce n’est pas f
 problème majeur (grâce au NS) mais on pourrait avoir envie de déterminer arbitrairement une 
 longueur moyenne de séquence. Pour ce faire il nous faut encore changer les probabilités.
 	New P(gain) = 1 - P(loss)
-	New P(loss) = (1 / [len seq + 1]) * [len seq] * Min( [len seq] / (2 * [ideal size]), 1 )
+	New P(loss) = (1 / [len seq]) * [len seq] * Min( [len seq] / (2 * [ideal size]), 1 )
 La formule n'est pas parfaite mais elle fonctionne tant qu'on ne cherche pas à obtenir des 
 séquences trop courtes.
