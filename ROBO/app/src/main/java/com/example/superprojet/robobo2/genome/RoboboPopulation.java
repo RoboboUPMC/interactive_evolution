@@ -33,7 +33,11 @@ public class RoboboPopulation {
 
     public void purge(ArrayList<Integer> parent_list)
     {
-        //
+        int i;
+        for (i=this.pop.size()-1; i>=0; i--)
+        {
+            if(!parent_list.contains(i)) this.pop.remove(i);
+        }
     }
 
     public int distLevenshtein(RoboboDNA individu_1) {
@@ -302,7 +306,11 @@ public class RoboboPopulation {
 
 
     public RoboboPopulation noveltySearch(RoboboPopulation nspop){
+<<<<<<< HEAD
        // this.purge(this.pop);
+=======
+        //this.purge();
+>>>>>>> origin/master
         return null;
     }
 
