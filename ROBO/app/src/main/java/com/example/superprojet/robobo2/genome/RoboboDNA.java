@@ -23,7 +23,10 @@ public class RoboboDNA {
 
     public void mutate(){
         int currSize = this.genotype.size();
+
+        //set arbitrarily, may change
         int idealSize = 10;
+
         ArrayList<RoboboGene> newGenotype = new ArrayList<RoboboGene>();
         float mutaProba = 1f/currSize;
         float lossProba = Math.min(1f, currSize/(2*idealSize));
@@ -35,16 +38,22 @@ public class RoboboDNA {
             r = random.nextFloat();
             if(r>=lossProba){
                 currGene = this.getGenotype().get(i);
-                currGene = currGene.mutate();
+                currGene.mutate();
                 newGenotype.add(currGene);
             }
         }
 
         r = random.nextFloat();
         if(r >= lossProba){
-            newGenotype.add(new RoboboGene(this.roboboManager, RoboboGene.MvmtType.FORWARD).mutate());
+            RoboboGene newGene = new RoboboGene(this.roboboManager, RoboboGene.MvmtType.FORWARD);
+            newGene.mutate();
+            newGenotype.add(newGene);
         }
+
+        this.setGenotype(newGenotype);
     }
+
+
 
     /**
      * Creates a RoboboDNA from the list made by crossover
@@ -57,6 +66,17 @@ public class RoboboDNA {
         }
 
     }
+
+    public void setGenotype(ArrayList<RoboboGene> genotype) {
+        this.genotype = genotype;
+    }
+
+    public void exec(){
+        for(RoboboGene gene: this.getGenotype()){
+            gene.exec();
+        }
+    }
+
 
     public ArrayList<RoboboGene> getGenotype() {
         return genotype;

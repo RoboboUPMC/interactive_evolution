@@ -192,7 +192,7 @@ public class RoboboGene {
         }
     }
 
-    public RoboboGene mutate(){
+    public void mutate(){
         RoboboGene mutatedGene = new RoboboGene(rob);
         Random random = new Random();
         MvmtType newMvmt;
@@ -200,8 +200,8 @@ public class RoboboGene {
 
         r = random.nextInt(MvmtType.values().length);
         newMvmt = MvmtType.values()[r];
-
-        return mutatedGene;
+        this.setMvmtType(newMvmt);
+;
     }
 
     public RoboboManager getRoboboManager() {
