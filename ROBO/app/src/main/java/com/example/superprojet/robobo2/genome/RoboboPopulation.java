@@ -33,7 +33,12 @@ public class RoboboPopulation {
 
     public void purge(ArrayList<Integer> parent_list)
     {
-        //
+        // received parent_list is already reversed
+        int i;
+        for (i=0; i<this.pop.size(); i++)
+        {
+            if(!parent_list.contains(i)) this.pop.remove(i);
+        }
     }
 
     public int distLevenshtein(RoboboDNA individu_1) {
