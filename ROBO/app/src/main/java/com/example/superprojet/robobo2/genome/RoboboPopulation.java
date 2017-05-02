@@ -40,42 +40,72 @@ public class RoboboPopulation {
         }
     }
 
-    public int distLevenshtein(RoboboDNA individu_1) {
+    public int levensteinCutoff()
+    {
+        int cutoffVal = Integer.MAX_VALUE;
+        int test_val;
+        for (RoboboDNA individu_i : this.pop)
+        {
+            test_val = this.minLevenstein(individu_i);
+            if (test_val < cutoffVal) cutoffVal = test_val;
+        }
+        return cutoffVal;
+    }
 
-        int long1 = individu_1.getGenotype().size();
-        int min_val = Integer.MAX_VALUE;
+    public int minLevenstein(RoboboDNA individu_1)
+    {
+        int min_val = 0;
+        int val;
         for (RoboboDNA individu_2 : this.pop)
         {
-            int long2 = individu_2.getGenotype().size();
+            val = distLevenshtein(individu_1, individu_2);
+            if (val > min_val){min_val = val;}
+        }
+        return min_val;
+    }
 
-            int[][] d = new int[long1 + 1][long2 + 1];
-            int substitutionCost;
-            int deletionCost = 1;
-            int insertionCost = 1;
+    public int maxLevenstein(RoboboDNA individu_1)
+    {
+        int min_val = Integer.MAX_VALUE;
+        int val;
+        for (RoboboDNA individu_2 : this.pop)
+        {
+            val = distLevenshtein(individu_1, individu_2);
+            if (val < min_val){min_val = val;}
+        }
+        return min_val;
+    }
 
-            for (int i = 0; i < d.length; i++) {
-                d[i][0] = i;
-            }
+    public int distLevenshtein(RoboboDNA individu_1, RoboboDNA individu_2) {
 
-            for (int j = 0; j < d[0].length; j++) {
-                d[0][j] = j;
-            }
+        int long1 = individu_1.getGenotype().size();
+        int long2 = individu_2.getGenotype().size();
 
-            for (int i = 0; i < d.length; i++) {
-                for (int j = 0; j < d[0].length; j++) {
-                    if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
-                        substitutionCost = 0;
-                    } else {
-                        substitutionCost = 1;
-                    }
-                    d[i][j] = Math.min(d[i - 1][j] + deletionCost, Math.min(d[i][j - 1] + insertionCost, d[i - 1][j - 1] + substitutionCost));
-                }
-            }
+        int[][] d = new int[long1 + 1][long2 + 1];
+        int substitutionCost;
+        int deletionCost = 1;
+        int insertionCost = 1;
 
-            if (d[long1][long2] < min_val){min_val = d[long1][long2];}
+        for (int i = 0; i < d.length; i++) {
+            d[i][0] = i;
         }
 
-        return min_val;
+        for (int j = 0; j < d[0].length; j++) {
+            d[0][j] = j;
+        }
+
+        for (int i = 0; i < d.length; i++) {
+            for (int j = 0; j < d[0].length; j++) {
+                if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
+                    substitutionCost = 0;
+                } else {
+                    substitutionCost = 1;
+                }
+                d[i][j] = Math.min(d[i - 1][j] + deletionCost, Math.min(d[i][j - 1] + insertionCost, d[i - 1][j - 1] + substitutionCost));
+            }
+        }
+
+        return d[long1][long2];
 
     }
 
