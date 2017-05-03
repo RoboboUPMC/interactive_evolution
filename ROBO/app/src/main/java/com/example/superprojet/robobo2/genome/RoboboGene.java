@@ -225,4 +225,8 @@ public class RoboboGene {
         RoboboGene gene = (RoboboGene) obj;
         return this.mvmtType == gene.mvmtType;
     }
+    
+    public int getLeftVelocity(){return this.leftVelocity;}
+    public int getRightVelocity(){return this.rightVelocity;}
+    public long getduration(){return duration;}
 }
