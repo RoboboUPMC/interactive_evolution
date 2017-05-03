@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Log.d("MainActivity.onCreate", "roboboManager = " + (roboboManager==null?"null":"des trucs"));
                 roboPop.init(basicPopSize, roboboManager);
                 NSpop.setPop(roboPop.getPop());
                 displayBGen(findViewById(R.id.behavior_generator_reset));
@@ -318,6 +319,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 if (!roboPopInit)
                 {
                     //roboPopInit
+
+                    Log.d("MainActivity.onCreate", "roboboManager = " + (roboboManager==null?"null":"des trucs"));
                     roboPop.init(basicPopSize, roboboManager);
                     NSpop.setPop(roboPop.getPop());
                     roboPopInit = true;

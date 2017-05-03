@@ -103,7 +103,7 @@ public class RoboboPopulation {
                 if (individu_1.getGenotype().get(i).equals(individu_2.getGenotype().get(j))) {
                     substitutionCost = 0;
                 } else {
-                    substitutionCost = 1;
+                    substitutionCost = 5;
                 }
                 d[i][j] = Math.min(d[i - 1][j] + deletionCost, Math.min(d[i][j - 1] + insertionCost, d[i - 1][j - 1] + substitutionCost));
             }
@@ -329,6 +329,7 @@ public class RoboboPopulation {
                     candidates.add(i);
                     bestNeigh = adjaTable[chosenMvmt][i];
                 }
+
                 else if(adjaTable[chosenMvmt][i] == bestNeigh){
                     bestNeigh = adjaTable[chosenMvmt][i];
                 }
@@ -339,7 +340,7 @@ public class RoboboPopulation {
 
         }
 
-        return new RoboboDNA(p1.getGenotype().get(0).getRoboboManager(), child);
+        return new RoboboDNA(p1.roboboManager, child);
 
     }
 
@@ -365,6 +366,7 @@ public class RoboboPopulation {
             k++;
             Log.d("NS", "essai : "+k.toString()+" temps : "+String.valueOf(System.currentTimeMillis() - start) + "trouvés : "+String.valueOf(offspring.size()));
             RoboboDNA child = xOver();
+            child.mutate();
             Log.d("NS", "distance acceptable : "+safeDistance.toString());
             Boolean newEnough = true;
             for(RoboboDNA other : nspop.getPop()){

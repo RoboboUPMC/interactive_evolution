@@ -54,6 +54,9 @@ public class RoboboGene {
 
     public RoboboGene(RoboboManager roboboManager, MvmtType d){
         this.roboboManager = roboboManager;
+        if(roboboManager == null){
+            Log.d("RoboboGene", "le manager passé en argument est null");
+        }
         try {
             rob = roboboManager.getModuleInstance(BluetoothRobInterfaceModule.class).getRobInterface();
         } catch (ModuleNotFoundException e) {

@@ -10,9 +10,9 @@ import java.util.Random;
  */
 
 public class RoboboDNA {
-    // It's called genotype but actually also reflects the phenotype
     
-    RoboboManager roboboManager;
+    public RoboboManager roboboManager;
+    // It's called genotype but actually also reflects the phenotype
     private ArrayList<RoboboGene> genotype = new ArrayList<>();
     public int selectionCounter = 0;
 
@@ -67,7 +67,7 @@ public class RoboboDNA {
      * @param child
      */
     public RoboboDNA(RoboboManager rm, ArrayList<Integer> child){
-
+        this.roboboManager = rm;
         for(Integer  mvmt : child){
             genotype.add(new RoboboGene(rm, RoboboGene.MvmtType.values()[mvmt]));
         }
