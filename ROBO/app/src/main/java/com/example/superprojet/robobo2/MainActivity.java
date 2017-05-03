@@ -21,6 +21,9 @@ import com.example.superprojet.robobo2.genome.RoboboPopulation;
 import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import android.app.ProgressDialog;
