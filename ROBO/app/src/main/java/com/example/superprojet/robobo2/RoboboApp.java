@@ -179,7 +179,7 @@ public class RoboboApp implements Runnable {
                 Thread.sleep(10L);// on attend que le robot ait terminé son action
             }
             //rob.moveMT(MoveMTMode.REVERSE_REVERSE,80,360,80,360);
-            Color c = new Color(160,0,0); // couleur à mettre en parametre pour les LEDs
+            Color c = new Color(160,0,0); // couleur à mettre en parametre pour les LED
             rob.movePan(1000,800);
             for(int i=1;i<=9;i++){
                 // setLEDColor s'occupe d'une LED à la fois
