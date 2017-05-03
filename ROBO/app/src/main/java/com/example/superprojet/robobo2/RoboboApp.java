@@ -2,6 +2,7 @@ package com.example.superprojet.robobo2;
 
 import android.util.Log;
 
+import com.example.superprojet.robobo2.genome.RoboboDNA;
 import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
 import com.mytechia.robobo.framework.exception.ModuleNotFoundException;
@@ -294,7 +295,9 @@ public class RoboboApp implements Runnable {
         }
        // }
     }
-
+    public void executeCommand (RoboboDNA rDNA)  {
+        rDNA.exec();
+    }
 }
 
 
