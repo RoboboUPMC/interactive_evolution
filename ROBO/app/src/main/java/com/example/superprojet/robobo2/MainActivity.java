@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     public ArrayList<Integer> parent_list;
     private AlertDialog resetPopup;
     private int basicPopSize = 10;
-
+    
+    /****/
+    String nomdata;
 
     /**************************Connection Bluetooth*************************************/
 
