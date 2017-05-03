@@ -303,6 +303,7 @@ public class RoboboPopulation {
             chosenMvmt = r.nextInt(8);
         }while(nbOcc.get(chosenMvmt) == 0);
         Integer index = 0;
+        Integer side = r.nextInt(1);
         while(!nbOcc.equals(Arrays.asList(new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 }))){
 
             // update of the number of occurrences table and adjacency table
@@ -327,7 +328,7 @@ public class RoboboPopulation {
             }
 
             chosenMvmt = candidates.get(r.nextInt(candidates.size()));
-            index += r.nextInt(1);
+            index += side;
 
         }
 
