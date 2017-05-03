@@ -499,7 +499,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             o = new OutputStreamWriter(f);
             o.write(data);
             o.flush();
-            //popup surgissant pour le résultat
             Toast.makeText(context, "Sauvegarder",Toast.LENGTH_SHORT).show();
         }
         catch (Exception e) {
