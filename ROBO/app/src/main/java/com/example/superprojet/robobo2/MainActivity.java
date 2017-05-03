@@ -72,7 +72,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     private int basicPopSize = 10;
     
     /****/
+    String data;
     String nomdata;
+    final Context context=this;
 
     /**************************Connection Bluetooth*************************************/
 
@@ -446,5 +448,70 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 //finish();
             } });
         adb.show();
+    }
+    
+    public void serialisationDNA(RoboboDNA rDNA) {
+
+        for(int i=0;i<rDNA.getGenotype().size();i++){
+            switch (rDNA.getGenotype().get(i).getMvmtType()){
+                case BACKWARDS:
+                    data += "BACKWARDS";
+
+                    break;
+                case BACKWARDS_LEFT:
+                    data += "BACKWARDS_LEFT";
+                    break;
+                case BACKWARDS_RIGHT:
+                    data += "BACKWARDS_RIGHT";
+                    break;
+                case FORWARD:
+                    data += "FORWARD";
+                    break;
+                case FORWARD_LEFT:
+                    data += "FORWARD_LEFT";
+                    break;
+                case FORWARD_RIGHT:
+                    data += "FORWARD_RIGHT";
+                    break;
+                case TURN_LEFT:
+                    data += "TURN_LEFT";
+                    break;
+                case TURN_RIGHT:
+                    data += "TURN_RIGHT";
+                    break;
+                default: break;
+            }
+            data += " "+rDNA.getGenotype().get(i).getLeftVelocity()
+                    +" "+rDNA.getGenotype().get(i).getRightVelocity()
+                    +" "+rDNA.getGenotype().get(i).getduration()+"/n";
+        }
+
+    }
+
+    public void  serialization(RoboboDNA rDNA){
+        boiteSauvegarde();
+        serialisationDNA(rDNA);
+        FileOutputStream f = null;
+        OutputStreamWriter o = null;
+
+        try{
+            f = context.openFileOutput(this.nomdata,MODE_APPEND);
+            o = new OutputStreamWriter(f);
+            o.write(data);
+            o.flush();
+            //popup surgissant pour le résultat
+            Toast.makeText(context, "Sauvegarder",Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e) {
+            Toast.makeText(context, "Echec",Toast.LENGTH_SHORT).show();
+        }
+        finally {
+            try {
+                o.close();
+                f.close();
+            } catch (IOException e) {
+                Toast.makeText(context, "Echec",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
