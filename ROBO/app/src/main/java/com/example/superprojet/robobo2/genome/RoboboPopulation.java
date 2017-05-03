@@ -97,7 +97,7 @@ public class RoboboPopulation {
 
         for (int i = 1; i < d.length; i++) {
             for (int j = 1; j < d[0].length; j++) {
-                if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
+                if (individu_1.getGenotype().get(i).equals(individu_2.getGenotype().get(j))) {
                     substitutionCost = 0;
                 } else {
                     substitutionCost = 1;
@@ -122,13 +122,13 @@ public class RoboboPopulation {
     public RoboboDNA choisirParent(){
         RoboboDNA parent = null;
         Random random = new Random();
-        ArrayList<Float> proba = new ArrayList<Float>(this.pop.size());
+        ArrayList<Float> proba = new ArrayList<Float>();
         float sumProba = 0;
         float cumulSum = 0;
 
         for(int i=0; i<this.pop.size(); i++){
             float currProba = ( 1f / (this.pop.get(i).selectionCounter + 1) * this.pop.size());
-            proba.set(i, currProba);
+            proba.add(currProba);
             sumProba += currProba;
         }
 
