@@ -424,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     
     /*****AlertDialogue Sauvegarde*****/
      public void boiteSauvegarde()  {
-        final String nom;
+        final String [] nom= new String[1];
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
@@ -436,10 +436,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 EditText valsaisie = (EditText)alertDialogView.findViewById(R.id.EditText);
-                nom=valsaisie.getText().toString();
+                nom[0]=valsaisie.getText().toString();
             } });
 
-        this.nomdata=nom;
+        this.nomdata=nom[0];
 
         adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
