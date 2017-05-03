@@ -141,11 +141,15 @@ public class RoboboPopulation {
             proba.set(i, cumulSum);
         }
 
-        float r = random.nextFloat();
-        for(int i=0; i<this.pop.size(); i++){
-            if(proba.get(i)<r){
-                parent= this.pop.get(i);
-                break;
+
+        Log.d("xOver", proba.toString());
+        while(parent == null){
+            float r = random.nextFloat();
+            for(int i=0; i<this.pop.size(); i++){
+                if(proba.get(i)<r){
+                    parent= this.pop.get(i);
+                    break;
+                }
             }
         }
         parent.selectionCounter++;
@@ -257,11 +261,11 @@ public class RoboboPopulation {
             }
         }
 
-        ArrayList<Integer> nbOcc = new ArrayList<>(8);
+        List<Integer> nbOcc = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0);
 
         Integer[][] adjaTable = new Integer[8][8];
         for(int i = 0 ; i < 8 ; i++){
-            for(int j = 0 ; j < 8 ; i++){
+            for(int j = 0 ; j < 8 ; j++){
                 adjaTable[i][j] = 0;
             }
         }
@@ -284,12 +288,12 @@ public class RoboboPopulation {
 
 
         for(int i = 0 ; i < p1.getGenotype().size() ; i++){
-            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) % p1.getGenotype().size()).getMvmtType().ordinal()] +=1;
-            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i-1) % p1.getGenotype().size()).getMvmtType().ordinal()] +=1;
+            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) < 8 ? i+1 : 0).getMvmtType().ordinal()] +=1;
+            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i-1) >= 0 ? i-1 : p1.getGenotype().size()-1).getMvmtType().ordinal()] +=1;
         }
         for(int i = 0 ; i < p2.getGenotype().size() ; i++){
-            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) % p1.getGenotype().size()).getMvmtType().ordinal()] +=1;
-            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i-1) % p1.getGenotype().size()).getMvmtType().ordinal()] +=1;
+            adjaTable[p2.getGenotype().get(i).getMvmtType().ordinal()][p2.getGenotype().get((i+1) < 8 ? i+1 : 0).getMvmtType().ordinal()] +=1;
+            adjaTable[p2.getGenotype().get(i).getMvmtType().ordinal()][p2.getGenotype().get((i-1) >= 0 ? i-1 : p1.getGenotype().size()-1).getMvmtType().ordinal()] +=1;
         }
         for(int i = 0 ; i < nbOcc.size() ; i++){
             if(nbOcc.get(i) == null){
@@ -311,21 +315,21 @@ public class RoboboPopulation {
 
             // update of the number of occurrences table and adjacency table
             child.add(index, chosenMvmt);
-            nbOcc.set(chosenMvmt, nbOcc.get(nbOcc.indexOf(chosenMvmt))-1);
+            nbOcc.set(chosenMvmt, nbOcc.get(chosenMvmt)-1);
 
             // We list all the neighbors that have the maximum adjacency with our chosen point
             for(int i = 0 ; i < 8 ; i++){
-                adjaTable[i][chosenMvmt] = nbOcc.get(nbOcc.indexOf(chosenMvmt)) == 0 ? 0 : adjaTable[i][chosenMvmt]-1;
+                adjaTable[i][chosenMvmt] = nbOcc.get(chosenMvmt) == 0 ? 0 : adjaTable[i][chosenMvmt]-1;
             }
             ArrayList<Integer> candidates = new ArrayList<>();
             Integer bestNeigh = 0;
             for(int i = 0 ; i < 8 ; i++){
-                if(adjaTable[chosenMvmt][i] > adjaTable[chosenMvmt][bestNeigh]){
+                if(adjaTable[chosenMvmt][i] > bestNeigh){
                     candidates.clear();
                     candidates.add(i);
                     bestNeigh = adjaTable[chosenMvmt][i];
                 }
-                else if(adjaTable[chosenMvmt][i] == adjaTable[chosenMvmt][bestNeigh]){
+                else if(adjaTable[chosenMvmt][i] == bestNeigh){
                     bestNeigh = adjaTable[chosenMvmt][i];
                 }
             }
@@ -356,9 +360,12 @@ public class RoboboPopulation {
 
 
         long start = System.currentTimeMillis();
-
+        Integer k = 0;
         while(offspring.size()<10 && System.currentTimeMillis() - start < 1000L){
+            k++;
+            Log.d("NS", "essai : "+k.toString()+" temps : "+String.valueOf(System.currentTimeMillis() - start) + "trouvés : "+String.valueOf(offspring.size()));
             RoboboDNA child = xOver();
+            Log.d("NS", "distance acceptable : "+safeDistance.toString());
             Boolean newEnough = true;
             for(RoboboDNA other : nspop.getPop()){
                 if(distLevenshtein(child, other) < safeDistance){
@@ -367,12 +374,14 @@ public class RoboboPopulation {
                 }
             }
             if(newEnough){
+                Log.d("NS", "distance de l'enfant choisi : " + safeDistance.toString());
                 offspring.add(child);
                 nspop.getPop().add(child);
             }
 
         }
         newGen.setPop((!offspring.isEmpty()?offspring:this.pop));
+        Log.d("NS", "terminé nbChildren: "+String.valueOf(newGen.getPop().size()));
         return newGen;
     }
 

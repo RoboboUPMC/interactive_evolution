@@ -34,7 +34,7 @@ public class RoboboDNA {
         //set arbitrarily, may change
         int idealSize = 10;
 
-        ArrayList<RoboboGene> newGenotype = new ArrayList<RoboboGene>();
+        ArrayList<RoboboGene> newGenotype = new ArrayList<>();
         float mutaProba = 1f/currSize;
         float lossProba = Math.min(1f, currSize/(2*idealSize));
         float r = 0;
