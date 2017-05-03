@@ -1,7 +1,13 @@
 package com.example.superprojet.robobo2.genome;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+
 import com.mytechia.robobo.framework.RoboboManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -84,6 +90,31 @@ public class RoboboDNA {
         for(RoboboGene gene: this.getGenotype()){
             gene.exec();
         }
+    }
+
+    public Bitmap DNAtoImage(){
+        RoboboDNASim sim = new RoboboDNASim();
+        Bitmap im = Bitmap.createBitmap(200,200, Bitmap.Config.ARGB_4444);
+
+        im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.BLUE);
+        for(RoboboGene gene: this.getGenotype()){
+            RoboboGene.MvmtType mv = gene.mvmtType;
+            double[] action = sim.mvmtToAction(mv);
+            if(action[0] == 0){
+                sim.execAtion(action);
+                im.setPixel(((int) sim.getPosition()[0]),( (int)sim.getPosition()[1]), Color.YELLOW);
+            }
+            else{
+                for(int i = 0; i < 25; i++){
+                    sim.execAtion(action);
+                    im.setPixel(((int) sim.getPosition()[0]),( (int)sim.getPosition()[1]), Color.YELLOW);
+                }
+            }
+            //System.out.println("Apres l'action, le robobo est en " + sim.position.toString() + "avec une vitesse " + sim.vitesse);
+        }
+
+        im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.RED);
+        return im;
     }
 
 
