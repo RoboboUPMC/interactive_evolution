@@ -1,11 +1,14 @@
 package com.example.superprojet.robobo2.genome;
 
+import android.util.Log;
+
 import com.mytechia.robobo.framework.RoboboManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 
@@ -82,7 +85,7 @@ public class RoboboPopulation {
         int long1 = individu_1.getGenotype().size();
         int long2 = individu_2.getGenotype().size();
 
-        int[][] d = new int[long1 + 1][long2 + 1];
+        int[][] d = new int[long1][long2];
         int substitutionCost;
         int deletionCost = 1;
         int insertionCost = 1;
@@ -97,7 +100,7 @@ public class RoboboPopulation {
 
         for (int i = 1; i < d.length; i++) {
             for (int j = 1; j < d[0].length; j++) {
-                if (individu_1.getGenotype().get(i).equals(individu_1.getGenotype().get(j))) {
+                if (individu_1.getGenotype().get(i).equals(individu_2.getGenotype().get(j))) {
                     substitutionCost = 0;
                 } else {
                     substitutionCost = 1;
@@ -106,7 +109,7 @@ public class RoboboPopulation {
             }
         }
 
-        return d[long1][long2];
+        return d[long1-1][long2-1];
 
     }
 
@@ -122,13 +125,13 @@ public class RoboboPopulation {
     public RoboboDNA choisirParent(){
         RoboboDNA parent = null;
         Random random = new Random();
-        ArrayList<Float> proba = new ArrayList<Float>(this.pop.size());
+        ArrayList<Float> proba = new ArrayList<>();
         float sumProba = 0;
         float cumulSum = 0;
 
         for(int i=0; i<this.pop.size(); i++){
             float currProba = ( 1f / (this.pop.get(i).selectionCounter + 1) * this.pop.size());
-            proba.set(i, currProba);
+            proba.add(currProba);
             sumProba += currProba;
         }
 
@@ -157,7 +160,7 @@ public class RoboboPopulation {
 
         // Class : movement type Integer[] : max number of adjacencies, mean number of occurrences
         HashMap<Class, Float[]> maxOcc = new HashMap<>(8);
-        ArrayList<Float> mean = new ArrayList<>(8);
+        List<Float> mean = Arrays.asList(0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f);
         maxOcc.put(MvmtFwd.class, new Float[]{0f, 0f});
         maxOcc.put(MvmtBwd.class, new Float[]{0f, 0f});
         maxOcc.put(MvmtLeft.class, new Float[]{0f, 0f});
