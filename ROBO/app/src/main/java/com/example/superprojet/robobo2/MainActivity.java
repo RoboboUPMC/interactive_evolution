@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.superprojet.robobo2.genome.RoboboDNA;
 import com.example.superprojet.robobo2.genome.RoboboPopulation;
@@ -417,5 +418,31 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             Thread.sleep(200L);
         }
         return 0;
+    }
+    
+    /*****AlertDialogue Sauvegarde*****/
+     public void boiteSauvegarde()  {
+        final String nom;
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+
+        adb.setView(alertDialogView);
+        adb.setTitle("Sauvegarder");
+
+
+        adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                EditText valsaisie = (EditText)alertDialogView.findViewById(R.id.EditText);
+                nom=valsaisie.getText().toString();
+            } });
+
+        this.nomdata=nom;
+
+        adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //finish();
+            } });
+        adb.show();
     }
 }
