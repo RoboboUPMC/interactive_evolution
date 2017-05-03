@@ -382,11 +382,19 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
     public void onClickList(View button)  {
 
-        LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
+        //LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
 
         View view = (View) button.getParent();
         int id = view.getId();
 
+        try {
+            roboPop.getPop().get(id).exec();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        /*
         if(id == 1) {
             parent.removeView(view);
             try {
@@ -407,8 +415,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
             }
         }
+        */
 
-        Log.d("onCLick", myList.get(id));
+        Log.d("onCLick", "Testing behavior "+id);//myList.get(id)
     }
 
     public int carre() throws InternalErrorException, InterruptedException {
