@@ -31,8 +31,9 @@ public class RoboboDNA {
         }
 
     }
-
-
+    public RoboboDNA(/*RoboboManager roboboManager ,*/String s){/*en attendant*/
+        /*this.roboboManager = roboboManager;*/
+    }
 
     public void mutate(){
         int currSize = this.genotype.size();
