@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     private int basicPopSize = 10;
     
     /****/
-    String data;
-    String nomdata;
     final Context context=this;
 
     /**************************Connection Bluetooth*************************************/
@@ -439,12 +437,19 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         return 0;
     }
     
-    /*****AlertDialogue Sauvegarde*****/
-     public void boiteSauvegarde()  {
-        final String [] nom= new String[1];
+    /*****Sauvegarde/Chargement************************************************************/
+     public void onClickseri(View view){
+   boiteSauvegarde();
+}
+    public void boiteSauvegarde()  {
+        final String[] nom = new String[1];
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        //final RoboboDNA rDNA= new RoboboDNA(roboboManager); ?
+
+        final RoboboDNA rDNA=new RoboboDNA("");
+        rDNA.getGenotype().add(new RoboboGene("BACKWARDS",0,0,50));
 
         adb.setView(alertDialogView);
         adb.setTitle("Sauvegarder");
@@ -453,10 +458,15 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 EditText valsaisie = (EditText)alertDialogView.findViewById(R.id.EditText);
-                nom[0]=valsaisie.getText().toString();
+                nom[0] =valsaisie.getText().toString();
+                try {
+                    serialization(nom[0],serialisationDNA(rDNA));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } });
 
-        this.nomdata=nom[0];
+
 
         adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -464,9 +474,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             } });
         adb.show();
     }
-    
-    public void serialisationDNA(RoboboDNA rDNA) {
-
+    public String serialisationDNA(RoboboDNA rDNA) {
+        String data="";
         for(int i=0;i<rDNA.getGenotype().size();i++){
             switch (rDNA.getGenotype().get(i).getMvmtType()){
                 case BACKWARDS:
@@ -498,34 +507,120 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             }
             data += " "+rDNA.getGenotype().get(i).getLeftVelocity()
                     +" "+rDNA.getGenotype().get(i).getRightVelocity()
-                    +" "+rDNA.getGenotype().get(i).getduration()+"/n";
+                    +" "+rDNA.getGenotype().get(i).getduration()+" ";
         }
+        return data;
 
     }
+    public void  serialization(String nom, String data) throws IOException {
+        FileOutputStream outputStream ;
 
-    public void  serialization(RoboboDNA rDNA){
-        boiteSauvegarde();
-        serialisationDNA(rDNA);
-        FileOutputStream f = null;
-        OutputStreamWriter o = null;
-
-        try{
-            f = context.openFileOutput(this.nomdata,MODE_APPEND);
-            o = new OutputStreamWriter(f);
-            o.write(data);
-            o.flush();
-            Toast.makeText(context, "Sauvegarder",Toast.LENGTH_SHORT).show();
+        try {
+            outputStream = openFileOutput(nom+".txt", Context.MODE_PRIVATE);
+            outputStream.write(data.getBytes());
+            Toast.makeText(context, "Sauvegarder", Toast.LENGTH_SHORT).show();
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-        catch (Exception e) {
-            Toast.makeText(context, "Echec",Toast.LENGTH_SHORT).show();
+        catch (IOException e){
+            e.printStackTrace();
+        }
+       if(!nom.equals("nomFichier"))
+        {sauvegarderListFichier(nom);}
+    }
+    public void onClickcharger(View view) throws IOException {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View alertDialogView = factory.inflate(R.layout.load_name, null);
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        final String [] nomdesFichiers=genererListeFichier();
+        final Spinner spin = (Spinner) alertDialogView.findViewById(R.id.loadspinner);
+        adb.setView(alertDialogView);
+        adb.setTitle("Charger");
+        final String[] resultat = new String[1];
+
+        if(nomdesFichiers.length!=0){
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, nomdesFichiers);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spin.setAdapter(dataAdapter);
+        }
+
+        adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if(nomdesFichiers.length!=0) {
+
+                    String nom = (String)spin.getSelectedItem();
+                    Toast.makeText(context,nom,Toast.LENGTH_SHORT).show();
+                    try {
+                        resultat[0] =charger(nom);
+                        remplirDNA(resultat[0]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } });
+
+        adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //finish();
+            } });
+        adb.show();
+    }
+    public String charger(String nom) throws IOException {
+        FileInputStream FIS =null;
+        String data="";
+        try{
+
+            FIS = openFileInput(nom+".txt");
+            byte[] buffer =new byte[1];
+            StringBuilder content=new StringBuilder();
+            while((FIS.read(buffer))!=-1){
+                content.append((new String(buffer)));
+            }
+            data = content.toString();
+            Toast.makeText(context,data,Toast.LENGTH_SHORT).show();
+
+        }
+        catch (FileNotFoundException e){
+           e.printStackTrace();
+
+        }
+        catch (IOException e){
+            return "";
+
         }
         finally {
-            try {
-                o.close();
-                f.close();
-            } catch (IOException e) {
-                Toast.makeText(context, "Echec",Toast.LENGTH_SHORT).show();
-            }
+            FIS.close();
         }
+        return data;
+    }
+    public void sauvegarderListFichier(String nvFichier) throws IOException {
+
+        try{
+            String data=charger("nomFichier");
+            data+=" "+nvFichier;
+            serialization("nomFichier",data);}
+        catch(Exception e){
+            String data=nvFichier;
+            serialization("nomFichier",data);
+        }
+
+
+    }
+    public String[] genererListeFichier() throws IOException {
+        String s;
+        s=charger("nomFichier");
+        String [] mot= s.split(" ");
+
+        return mot;
+    }
+    public RoboboDNA remplirDNA  (String resultat){
+        RoboboDNA rDNA=new RoboboDNA(/*roboboManager,*/ "");
+        String [] mot  = resultat.split(" ");
+
+        for(int i=0;i<mot.length;i=i+4){
+                   rDNA.getGenotype().add(new RoboboGene(/*roboboManager,*/mot[i],Integer.parseInt(mot[i+1]),Integer.parseInt(mot[i+2]),Long.parseLong(mot[i+3])));
+        }
+        return rDNA;
     }
 }
