@@ -150,7 +150,37 @@ public class RoboboGene {
         }
 
     }
-
+    public RoboboGene(/*RoboboManager roboboManager,*/ String mvt,int lV, int rV,long dur){
+        /*this.roboboManager = roboboManager;*/
+        if(mvt.equals("BACKWARDS")){
+            this.setMvmtType(BACKWARDS);
+        }
+        else if(mvt.equals("BACKWARDS_LEFT")){
+            this.setMvmtType(BACKWARDS_LEFT);
+        }
+        else if(mvt.equals("BACKWARDS_RIGHT")){
+            this.setMvmtType(BACKWARDS_RIGHT);
+        }
+        else if(mvt.equals("FORWARD")){
+            this.setMvmtType(FORWARD);
+        }
+        else if(mvt.equals("FORWARD_LEFT")){
+            this.setMvmtType(FORWARD_LEFT);
+        }
+        else if(mvt.equals("FORWARD_RIGHT")){
+            this.setMvmtType(FORWARD_RIGHT);
+        }
+        else if(mvt.equals("TURN_LEFT")){
+            this.setMvmtType(TURN_LEFT);
+        }
+        else if(mvt.equals("TURN_RIGHT")){
+            this.setMvmtType(TURN_RIGHT);
+        }
+        this.leftVelocity=lV;
+        this.rightVelocity=rV;
+        this.duration=dur;
+    }
+    
     public void setMvmtType(MvmtType mvmtType) {
         this.mvmtType = mvmtType;
         switch (mvmtType){
