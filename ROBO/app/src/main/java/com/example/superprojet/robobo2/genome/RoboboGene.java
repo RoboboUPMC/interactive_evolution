@@ -337,31 +337,30 @@ public class RoboboGene implements Runnable{
 
     @Override
     public void run() {
-        rob.addRobStatusListener(listener);
-
-        try {
-            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
-        } catch (InternalErrorException e) {
-            e.printStackTrace();
-        }
-        try {
-            rob.setOperationMode((byte)1);
-        } catch (InternalErrorException e) {
-            e.printStackTrace();
-        }
+//        rob.addRobStatusListener(listener);
+//
+//        try {
+//            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
+//        } catch (InternalErrorException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            rob.setOperationMode((byte)1);
+//        } catch (InternalErrorException e) {
+//            e.printStackTrace();
+//        }
 
 
         try {
             rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
-            Thread.sleep(mvmt.getDuration());
 //            while(rightVelocity!=0 || leftVelocity!=0){
 //                Thread.sleep(10L);// on attend que le robot ait terminé son action
 //            }
-            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 0, 0, 1L);
+//            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 0, 0, 1L);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rob.removeRobStatusListener(listener);
+//        rob.removeRobStatusListener(listener);
         Log.d("RoboboGene.run()", "over");
 
     }
