@@ -304,75 +304,7 @@ public class RoboboGene implements Runnable{
         rob = r;
     }
 
-    public void exec(){
-        rob.addRobStatusListener(new IRobStatusListener() {
-            @Override
-            public void statusMotorsMT(MotorStatus left, MotorStatus right) {
-                RoboboGene.this.leftVelocity = left.getAngularVelocity();
-                RoboboGene.this.rightVelocity = right.getAngularVelocity();
 
-            }
-
-            @Override
-            public void statusMotorPan(MotorStatus status) {
-
-            }
-
-            @Override
-            public void statusMotorTilt(MotorStatus status) {
-
-            }
-
-            @Override
-            public void statusGaps(Collection<GapStatus> gaps) {
-
-            }
-
-            @Override
-            public void statusFalls(Collection<FallStatus> fall) {
-
-            }
-
-            @Override
-            public void statusIRSensorStatus(Collection<IRSensorStatus> irSensorStatus) {
-
-            }
-
-            @Override
-            public void statusBattery(BatteryStatus battery) {
-
-            }
-
-            @Override
-            public void statusWallConnectionStatus(WallConnectionStatus wallConnectionStatus) {
-
-            }
-
-            @Override
-            public void robCommunicationError(InternalErrorException ex) {
-
-            }
-        });
-
-        try {
-            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
-        } catch (InternalErrorException e) {
-            e.printStackTrace();
-        }
-        this.run();
-//        try {
-//            rob.setOperationMode((byte) 1);
-//            rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
-//            Log.d("RoboboGene.exec()", "on essaie");
-//            while(rightVelocity!=0 || leftVelocity!=0){
-//                Thread.sleep(10L);// on attend que le robot ait terminé son action
-//            }
-//        } catch (InternalErrorException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-    }
 
     public void mutate(){
         RoboboGene mutatedGene = new RoboboGene(rob);
@@ -421,10 +353,11 @@ public class RoboboGene implements Runnable{
 
         try {
             rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
-            Thread.sleep(50);
-            while(rightVelocity!=0 || leftVelocity!=0){
-                Thread.sleep(10L);// on attend que le robot ait terminé son action
-            }
+            Thread.sleep(mvmt.getDuration());
+//            while(rightVelocity!=0 || leftVelocity!=0){
+//                Thread.sleep(10L);// on attend que le robot ait terminé son action
+//            }
+            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 0, 0, 1L);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -435,5 +368,5 @@ public class RoboboGene implements Runnable{
     
     public int getLeftVelocity(){return this.leftVelocity;}
     public int getRightVelocity(){return this.rightVelocity;}
-    public long getduration(){return duration;}
+    public long getduration(){return mvmt.getDuration();}
 }

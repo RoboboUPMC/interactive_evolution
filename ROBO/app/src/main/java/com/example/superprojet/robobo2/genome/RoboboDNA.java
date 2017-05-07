@@ -125,12 +125,17 @@ public class RoboboDNA {
 
         try {
             rob.setOperationMode((byte)1);
-            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 80, 1000, 80, 1000);
+          //  rob.moveMT(MoveMTMode.FORWARD_FORWARD, 80, 1000, 80, 1000);
         } catch (InternalErrorException e) {
             e.printStackTrace();
         }
         for(RoboboGene gene: this.getGenotype()){
             gene.run();
+            try {
+                Thread.sleep(gene.getduration());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
