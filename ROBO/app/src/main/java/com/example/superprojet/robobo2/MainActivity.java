@@ -618,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     Toast.makeText(context,nom,Toast.LENGTH_SHORT).show();
                     try {
                         resultat[0] =charger(nom);
-                        remplirDNA(resultat[0]);
+                        roboPop.getPop().add(remplirDNA(resultat[0]));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
