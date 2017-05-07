@@ -34,7 +34,7 @@ import java.util.Random;
 // and have a small chance of mutating the color of each gene on a normal
 // distribution
 
-public class RoboboGene {
+public class RoboboGene implements Runnable{
 
     public enum MvmtType{
         FORWARD, FORWARD_LEFT, FORWARD_RIGHT, BACKWARDS, BACKWARDS_LEFT, BACKWARDS_RIGHT, TURN_LEFT, TURN_RIGHT
@@ -150,6 +150,46 @@ public class RoboboGene {
         }
 
     }
+
+    public RoboboGene(IRob r, MvmtType d){
+        this.roboboManager = roboboManager;
+        rob = r;
+
+
+
+
+        mvmtType = d;
+
+        switch (d){
+            case BACKWARDS:
+                mvmt = new MvmtBwd();
+                break;
+            case BACKWARDS_LEFT:
+                mvmt = new MvmtBwdLeft();
+                break;
+            case BACKWARDS_RIGHT:
+                mvmt = new MvmtBwdRight();
+                break;
+            case FORWARD:
+                mvmt = new MvmtFwd();
+                break;
+            case FORWARD_LEFT:
+                mvmt = new MvmtFwdLeft();
+                break;
+            case FORWARD_RIGHT:
+                mvmt = new MvmtFwdRight();
+                break;
+            case TURN_LEFT:
+                mvmt = new MvmtLeft();
+                break;
+            case TURN_RIGHT:
+                mvmt = new MvmtRight();
+                break;
+            default: break;
+        }
+
+    }
+
     public RoboboGene(/*RoboboManager roboboManager,*/ String mvt,int lV, int rV,long dur){
         /*this.roboboManager = roboboManager;*/
         if(mvt.equals("BACKWARDS")){
@@ -217,17 +257,73 @@ public class RoboboGene {
     }
 
     public void exec(){
-        try {
-            rob.setOperationMode((byte) 1);
-            rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
-            while(rightVelocity!=0 || leftVelocity!=0){
-                Thread.sleep(10L);// on attend que le robot ait terminé son action
+        rob.addRobStatusListener(new IRobStatusListener() {
+            @Override
+            public void statusMotorsMT(MotorStatus left, MotorStatus right) {
+                RoboboGene.this.leftVelocity = left.getAngularVelocity();
+                RoboboGene.this.rightVelocity = right.getAngularVelocity();
+
             }
+
+            @Override
+            public void statusMotorPan(MotorStatus status) {
+
+            }
+
+            @Override
+            public void statusMotorTilt(MotorStatus status) {
+
+            }
+
+            @Override
+            public void statusGaps(Collection<GapStatus> gaps) {
+
+            }
+
+            @Override
+            public void statusFalls(Collection<FallStatus> fall) {
+
+            }
+
+            @Override
+            public void statusIRSensorStatus(Collection<IRSensorStatus> irSensorStatus) {
+
+            }
+
+            @Override
+            public void statusBattery(BatteryStatus battery) {
+
+            }
+
+            @Override
+            public void statusWallConnectionStatus(WallConnectionStatus wallConnectionStatus) {
+
+            }
+
+            @Override
+            public void robCommunicationError(InternalErrorException ex) {
+
+            }
+        });
+
+        try {
+            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
         } catch (InternalErrorException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+        this.run();
+//        try {
+//            rob.setOperationMode((byte) 1);
+//            rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
+//            Log.d("RoboboGene.exec()", "on essaie");
+//            while(rightVelocity!=0 || leftVelocity!=0){
+//                Thread.sleep(10L);// on attend que le robot ait terminé son action
+//            }
+//        } catch (InternalErrorException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void mutate(){
@@ -257,6 +353,26 @@ public class RoboboGene {
         }
         RoboboGene gene = (RoboboGene) obj;
         return this.mvmtType == gene.mvmtType;
+    }
+
+    @Override
+    public void run() {
+        try {
+            rob.setOperationMode((byte)1);
+        } catch (InternalErrorException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
+            while(rightVelocity!=0 || leftVelocity!=0){
+                Thread.sleep(10L);// on attend que le robot ait terminé son action
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     
     public int getLeftVelocity(){return this.leftVelocity;}

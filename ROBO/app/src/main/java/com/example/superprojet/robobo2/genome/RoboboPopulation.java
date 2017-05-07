@@ -3,6 +3,7 @@ package com.example.superprojet.robobo2.genome;
 import android.util.Log;
 
 import com.mytechia.robobo.framework.RoboboManager;
+import com.mytechia.robobo.rob.IRob;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,16 @@ public class RoboboPopulation {
         for (i = 0; i < popSize; i++)
         {
             pop.add(new RoboboDNA(roboboManager));
+        }
+    }
+
+    public void init(int popSize, IRob rob)
+    {
+        pop.clear();
+        int i;
+        for (i = 0; i < popSize; i++)
+        {
+            pop.add(new RoboboDNA(rob));
         }
     }
 
@@ -340,7 +351,7 @@ public class RoboboPopulation {
 
         }
 
-        return new RoboboDNA(p1.roboboManager, child);
+        return new RoboboDNA(p1.rob, child);
 
     }
 

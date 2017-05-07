@@ -54,6 +54,7 @@ import com.mytechia.robobo.rob.BluetoothRobInterfaceModule;
 
 import com.mytechia.robobo.rob.IRob;
 import com.mytechia.robobo.rob.MoveMTMode;
+import com.mytechia.robobo.rob.movement.IRobMovementModule;
 import com.mytechia.robobo.rob.util.RoboboDeviceSelectionDialog;
 
 
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     /**************************Connection Bluetooth*************************************/
 
     private static final String TAG="RemoteControlActivity";
+    public IRob rob;
+    public IRobMovementModule move;
 
     public MainActivity() throws URISyntaxException {
         IRemoteControlModule a;
@@ -172,7 +175,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
                 //the robobo service and manager have been started up
                 roboboManager = robobo;
-                app = new RoboboApp(roboboManager, MainActivity.this, null);
+                try {
+                    rob = roboboManager.getModuleInstance(BluetoothRobInterfaceModule.class).getRobInterface();
+                    move = roboboManager.getModuleInstance((IRobMovementModule.class));
+                } catch (ModuleNotFoundException e) {
+                    Log.d("RoboboApp", "erreur");
+                    Log.e("ROBOBO-APP", "Module not found: "+e.getMessage());
+                }
+                app = new RoboboApp(rob, move, null);
 
 
                 //dismiss the wait dialog
@@ -253,8 +263,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.d("MainActivity.onCreate", "roboboManager = " + (roboboManager==null?"null":"des trucs"));
-                roboPop.init(basicPopSize, roboboManager);
+                Log.d("MainActivity.onCreate", "rob = " + (rob==null?"null":"des trucs"));
+                roboPop.init(basicPopSize, rob);
                 NSpop.setPop(roboPop.getPop());
                 displayBGen(findViewById(R.id.behavior_generator_reset));
                 dialog.dismiss();
@@ -270,6 +280,12 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         myList.add("chouette");
         myList.add("chose");
         myList.add("bestiole");
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        roboboHelper.unbindRoboboService();
     }
 
     @Override
@@ -323,9 +339,17 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 {
                     //roboPopInit
 
-                    Log.d("MainActivity.onCreate", "roboboManager = " + (roboboManager==null?"null":"des trucs"));
-                    roboPop.init(basicPopSize, roboboManager);
-                    NSpop.setPop(roboPop.getPop());
+                    Log.d("MainActivity.onCreate", "rob = " + (rob==null?"null":"des trucs"));
+                    try{
+                        roboPop.init(basicPopSize, rob);
+                    }catch(java.util.ConcurrentModificationException e){
+                        Log.d("init : ", "Exception de merde");
+                    }
+                    try{
+                        NSpop.setPop(roboPop.getPop());
+                    }catch(java.util.ConcurrentModificationException e){
+                        Log.d("setpop : ", "Exception de merde");
+                    }
                     roboPopInit = true;
                     Log.d("onClickMain", "initialize RoboPop");
                 }

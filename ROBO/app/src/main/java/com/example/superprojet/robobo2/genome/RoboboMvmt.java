@@ -12,7 +12,7 @@ import java.util.Random;
 abstract class RoboboMvmt {
 
 
-    long duration =  200L;
+    long duration =  1000L;
     int leftVelocity;
     int rightVelocity;
 

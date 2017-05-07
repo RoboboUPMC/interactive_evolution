@@ -75,6 +75,15 @@ public class RoboboApp implements Runnable {
             Log.e("ROBOBO-APP", "Module not found: "+ex.getMessage());
         }
 
+    }
+
+    public RoboboApp(IRob iRob, IRobMovementModule m, Callable<Integer> bhv) {
+        this.bhv = bhv;
+
+
+
+        rob = iRob;
+        move = m;
 
     }
 
@@ -88,12 +97,15 @@ public class RoboboApp implements Runnable {
         }
 
 
-        try {
-            bhv.call();
-            carre();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            bhv.call();
+//            carre();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        //actionSequence();
+
         try {
             move.moveTilt(6, 26);
         } catch (InternalErrorException e) {

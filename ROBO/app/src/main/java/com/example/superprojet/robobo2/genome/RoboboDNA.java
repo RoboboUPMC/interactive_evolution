@@ -3,8 +3,14 @@ package com.example.superprojet.robobo2.genome;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 
+import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
+import com.mytechia.robobo.framework.exception.ModuleNotFoundException;
+import com.mytechia.robobo.rob.BluetoothRobInterfaceModule;
+import com.mytechia.robobo.rob.IRob;
+import com.mytechia.robobo.rob.MoveMTMode;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +22,8 @@ import java.util.Random;
  */
 
 public class RoboboDNA {
-    
+
+    public IRob rob;
     public RoboboManager roboboManager;
     // It's called genotype but actually also reflects the phenotype
     private ArrayList<RoboboGene> genotype = new ArrayList<>();
@@ -28,6 +35,16 @@ public class RoboboDNA {
         Random r = new Random();
         for(int i = 0 ; i < seqSize ; i++){
             genotype.add(new RoboboGene(roboboManager, RoboboGene.MvmtType.values()[r.nextInt(RoboboGene.MvmtType.values().length)]));
+        }
+
+    }
+
+    public RoboboDNA(IRob iRob){
+        rob = iRob;
+        Integer seqSize = 10;
+        Random r = new Random();
+        for(int i = 0 ; i < seqSize ; i++){
+            genotype.add(new RoboboGene(rob, RoboboGene.MvmtType.values()[r.nextInt(RoboboGene.MvmtType.values().length)]));
         }
 
     }
@@ -59,7 +76,7 @@ public class RoboboDNA {
 
         r = random.nextFloat();
         if(r >= lossProba){
-            RoboboGene newGene = new RoboboGene(this.roboboManager, RoboboGene.MvmtType.FORWARD);
+            RoboboGene newGene = new RoboboGene(this.rob, RoboboGene.MvmtType.FORWARD);
             newGene.mutate();
             newGenotype.add(newGene);
         }
@@ -82,12 +99,31 @@ public class RoboboDNA {
     }
 
 
+    /**
+     * Creates a RoboboDNA from the list made by crossover
+     * @param child
+     */
+    public RoboboDNA(IRob rm, ArrayList<Integer> child){
+        this.rob = rm;
+        for(Integer  mvmt : child){
+            genotype.add(new RoboboGene(rob, RoboboGene.MvmtType.values()[mvmt]));
+        }
+
+    }
+
+
     public void setGenotype(ArrayList<RoboboGene> genotype) {
         this.genotype = genotype;
     }
 
     public void exec(){
 
+        try {
+            rob.setOperationMode((byte)1);
+            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 80, 1000, 80, 1000);
+        } catch (InternalErrorException e) {
+            e.printStackTrace();
+        }
         for(RoboboGene gene: this.getGenotype()){
             gene.exec();
         }
