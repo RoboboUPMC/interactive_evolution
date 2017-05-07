@@ -50,6 +50,55 @@ public class RoboboGene implements Runnable{
 
     RoboboMvmt mvmt;
 
+    IRobStatusListener listener = new IRobStatusListener() {
+        @Override
+        public void statusMotorsMT(MotorStatus left, MotorStatus right) {
+            RoboboGene.this.leftVelocity = left.getAngularVelocity();
+            RoboboGene.this.rightVelocity = right.getAngularVelocity();
+
+        }
+
+        @Override
+        public void statusMotorPan(MotorStatus status) {
+
+        }
+
+        @Override
+        public void statusMotorTilt(MotorStatus status) {
+
+        }
+
+        @Override
+        public void statusGaps(Collection<GapStatus> gaps) {
+
+        }
+
+        @Override
+        public void statusFalls(Collection<FallStatus> fall) {
+
+        }
+
+        @Override
+        public void statusIRSensorStatus(Collection<IRSensorStatus> irSensorStatus) {
+
+        }
+
+        @Override
+        public void statusBattery(BatteryStatus battery) {
+
+        }
+
+        @Override
+        public void statusWallConnectionStatus(WallConnectionStatus wallConnectionStatus) {
+
+        }
+
+        @Override
+        public void robCommunicationError(InternalErrorException ex) {
+
+        }
+    };
+
     long duration;
 
     public RoboboGene(RoboboManager roboboManager, MvmtType d){
@@ -152,7 +201,6 @@ public class RoboboGene implements Runnable{
     }
 
     public RoboboGene(IRob r, MvmtType d){
-        this.roboboManager = roboboManager;
         rob = r;
 
 
@@ -357,6 +405,13 @@ public class RoboboGene implements Runnable{
 
     @Override
     public void run() {
+        rob.addRobStatusListener(listener);
+
+        try {
+            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
+        } catch (InternalErrorException e) {
+            e.printStackTrace();
+        }
         try {
             rob.setOperationMode((byte)1);
         } catch (InternalErrorException e) {
@@ -366,12 +421,15 @@ public class RoboboGene implements Runnable{
 
         try {
             rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
+            Thread.sleep(50);
             while(rightVelocity!=0 || leftVelocity!=0){
                 Thread.sleep(10L);// on attend que le robot ait terminé son action
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        rob.removeRobStatusListener(listener);
+        Log.d("RoboboGene.run()", "over");
 
     }
     

@@ -130,7 +130,7 @@ public class RoboboDNA {
             e.printStackTrace();
         }
         for(RoboboGene gene: this.getGenotype()){
-            gene.exec();
+            gene.run();
         }
     }
 
