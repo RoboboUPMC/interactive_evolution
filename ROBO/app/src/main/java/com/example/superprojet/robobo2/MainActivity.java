@@ -443,18 +443,11 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     }
     
     /*****Sauvegarde/Chargement************************************************************/
-     public void onClickseri(View view){
-   boiteSauvegarde();
-}
-    public void boiteSauvegarde()  {
+     public void boiteSauvegarde(final RoboboDNA rDNA)  {
         final String[] nom = new String[1];
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        //final RoboboDNA rDNA= new RoboboDNA(roboboManager); ?
-
-        final RoboboDNA rDNA=new RoboboDNA("");
-        rDNA.getGenotype().add(new RoboboGene("BACKWARDS",0,0,50));
 
         adb.setView(alertDialogView);
         adb.setTitle("Sauvegarder");
