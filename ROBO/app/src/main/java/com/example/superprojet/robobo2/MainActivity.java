@@ -679,8 +679,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         return mot;
     }
-    public RoboboDNA remplirDNA  (String resultat){
-        RoboboDNA rDNA=new RoboboDNA(/*roboboManager,*/ resultat);
+  public RoboboDNA remplirDNA  (String resultat){
+        RoboboDNA rDNA=new RoboboDNA(rob, resultat);
         return rDNA;
     }
 }
