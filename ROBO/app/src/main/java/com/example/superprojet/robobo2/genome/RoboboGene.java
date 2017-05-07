@@ -190,8 +190,8 @@ public class RoboboGene implements Runnable{
 
     }
 
-    public RoboboGene(/*RoboboManager roboboManager,*/ String mvt,int lV, int rV,long dur){
-        /*this.roboboManager = roboboManager;*/
+   public RoboboGene(IRob r, String mvt,int lV, int rV,long dur){
+        rob = r;
         if(mvt.equals("BACKWARDS")){
             this.setMvmtType(mvmtType.BACKWARDS);
         }
