@@ -153,28 +153,28 @@ public class RoboboGene {
     public RoboboGene(/*RoboboManager roboboManager,*/ String mvt,int lV, int rV,long dur){
         /*this.roboboManager = roboboManager;*/
         if(mvt.equals("BACKWARDS")){
-            this.setMvmtType(BACKWARDS);
+            this.setMvmtType(mvmtType.BACKWARDS);
         }
         else if(mvt.equals("BACKWARDS_LEFT")){
-            this.setMvmtType(BACKWARDS_LEFT);
+            this.setMvmtType(mvmtType.BACKWARDS_LEFT);
         }
         else if(mvt.equals("BACKWARDS_RIGHT")){
-            this.setMvmtType(BACKWARDS_RIGHT);
+            this.setMvmtType(mvmtType.BACKWARDS_RIGHT);
         }
         else if(mvt.equals("FORWARD")){
-            this.setMvmtType(FORWARD);
+            this.setMvmtType(mvmtType.FORWARD);
         }
         else if(mvt.equals("FORWARD_LEFT")){
-            this.setMvmtType(FORWARD_LEFT);
+            this.setMvmtType(mvmtType.FORWARD_LEFT);
         }
         else if(mvt.equals("FORWARD_RIGHT")){
-            this.setMvmtType(FORWARD_RIGHT);
+            this.setMvmtType(mvmtType.FORWARD_RIGHT);
         }
         else if(mvt.equals("TURN_LEFT")){
-            this.setMvmtType(TURN_LEFT);
+            this.setMvmtType(mvmtType.TURN_LEFT);
         }
         else if(mvt.equals("TURN_RIGHT")){
-            this.setMvmtType(TURN_RIGHT);
+            this.setMvmtType(mvmtType.TURN_RIGHT);
         }
         this.leftVelocity=lV;
         this.rightVelocity=rV;
