@@ -2,7 +2,7 @@
     <string name="app_name">ROBOBO2</string>
     <string name="goto_end">End</string>
     <string name="reset">Reset</string>
-    <string name="optimiser">Opti</string>
+    <string name="load">Load</string>
     <string name="nsbutton">Ns</string>
     <string name="behavior_generator_info_hint">Information&#8230;</string>
     <string name="testbuttons">test</string>

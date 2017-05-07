@@ -414,9 +414,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 displayBGen(button);
                 Log.d("onClickOptions", parent_list.toString());
                 break;
-            case R.id.behavior_generator_optimiser :
-                Log.d("onClickOptions", "Optimize button");
-                //does nothing for now
+            case R.id.behavior_generator_load :
+                Log.d("onClickOptions", "Load button");
+                try {
+                    onClickcharger(button);
+                } catch (Exception e) {
+                    Log.e("onClickOptions", "Error loading file.");
+                }
                 break;
             case R.id.behavior_generator_end :
                 Log.d("onClickOptions", "End button");
