@@ -67,7 +67,7 @@ import java.util.concurrent.Callable;
 
 public class MainActivity extends AppCompatActivity implements ITestListener {
 
-    ArrayList<String> myList = new ArrayList<>();
+    //ArrayList<String> myList = new ArrayList<>();
     static Boolean atMainview;
 
     public RoboboManager roboboManager;
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     public Boolean roboPopInit;
     public ArrayList<Integer> parent_list;
     private AlertDialog resetPopup;
+    private AlertDialog presavePopup;
     private int basicPopSize = 10;
     
     /****/
@@ -272,14 +273,27 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         });
         resetPopup = builder.create();
 
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setMessage(R.string.preSavePopupContent)
+                .setTitle(R.string.presavePopupTitle);
+        builder2.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        presavePopup = builder2.create();
 
 
+
+        /*
         myList.add("tralala");
         myList.add("truc");
         myList.add("machin");
         myList.add("chouette");
         myList.add("chose");
         myList.add("bestiole");
+        */
     }
 
     @Override
@@ -371,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
     public void onClickOptions(View button) {
         int counter;
+        LinearLayout parent;
         //ArrayList<String> chosen = new ArrayList<>();
         switch (button.getId()) {
             case R.id.behavior_generator_reset :
@@ -379,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 break;
             case R.id.behavior_generator_nsbutton :
                 Log.d("onClickOptions", "NS button");
-                LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
+                parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
                 parent_list.clear();
                 for (counter = 0; counter < parent.getChildCount(); counter++) {
                     CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
@@ -405,6 +420,30 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 break;
             case R.id.behavior_generator_end :
                 Log.d("onClickOptions", "End button");
+                parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
+                RoboboDNA toSave = null;
+                for (counter = 0; counter < parent.getChildCount(); counter++) {
+                    CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
+                    if (checkBox.isChecked()) {
+                        if (toSave == null)
+                            toSave = roboPop.getPop().get(counter);
+                        else
+                        {
+                            toSave = null;
+                            break;
+                        }
+                    }
+                }
+                if (toSave == null)
+                {
+                    Log.d("onClickOptions", "not single behavior selected");
+                    presavePopup.show();
+                }
+                else
+                {
+                    Log.d("onClickOptions", "saving...");
+                    boiteSauvegarde(toSave);
+                }
                 // saves the selected behavior to a file
                 // displays a popup, clears all behaviors, sets roboPopInit = false
                 break;
@@ -467,18 +506,11 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     }
     
     /*****Sauvegarde/Chargement************************************************************/
-     public void onClickseri(View view){
-   boiteSauvegarde();
-}
-    public void boiteSauvegarde()  {
+     public void boiteSauvegarde(final RoboboDNA rDNA)  {
         final String[] nom = new String[1];
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        //final RoboboDNA rDNA= new RoboboDNA(roboboManager); ?
-
-        final RoboboDNA rDNA=new RoboboDNA("");
-        rDNA.getGenotype().add(new RoboboGene("BACKWARDS",0,0,50));
 
         adb.setView(alertDialogView);
         adb.setTitle("Sauvegarder");
@@ -644,12 +676,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         return mot;
     }
     public RoboboDNA remplirDNA  (String resultat){
-        RoboboDNA rDNA=new RoboboDNA(/*roboboManager,*/ "");
-        String [] mot  = resultat.split(" ");
-
-        for(int i=0;i<mot.length;i=i+4){
-                   rDNA.getGenotype().add(new RoboboGene(/*roboboManager,*/mot[i],Integer.parseInt(mot[i+1]),Integer.parseInt(mot[i+2]),Long.parseLong(mot[i+3])));
-        }
+        RoboboDNA rDNA=new RoboboDNA(/*roboboManager,*/ resultat);
         return rDNA;
     }
 }
