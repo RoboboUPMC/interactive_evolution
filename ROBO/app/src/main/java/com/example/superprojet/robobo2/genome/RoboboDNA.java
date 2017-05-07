@@ -29,15 +29,6 @@ public class RoboboDNA {
     private ArrayList<RoboboGene> genotype = new ArrayList<>();
     public int selectionCounter = 0;
 
-    public RoboboDNA(RoboboManager roboboManager){
-        this.roboboManager = roboboManager;
-        Integer seqSize = 10;
-        Random r = new Random();
-        for(int i = 0 ; i < seqSize ; i++){
-            genotype.add(new RoboboGene(roboboManager, RoboboGene.MvmtType.values()[r.nextInt(RoboboGene.MvmtType.values().length)]));
-        }
-
-    }
 
     public RoboboDNA(IRob iRob){
         rob = iRob;
@@ -91,17 +82,7 @@ public class RoboboDNA {
 
 
 
-    /**
-     * Creates a RoboboDNA from the list made by crossover
-     * @param child
-     */
-    public RoboboDNA(RoboboManager rm, ArrayList<Integer> child){
-        this.roboboManager = rm;
-        for(Integer  mvmt : child){
-            genotype.add(new RoboboGene(rm, RoboboGene.MvmtType.values()[mvmt]));
-        }
 
-    }
 
 
     /**

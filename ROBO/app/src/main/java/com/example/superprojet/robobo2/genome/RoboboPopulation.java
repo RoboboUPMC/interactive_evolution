@@ -22,16 +22,6 @@ public class RoboboPopulation {
     ArrayList<RoboboDNA> pop = new ArrayList<>();
 
 
-    public void init(int popSize, RoboboManager roboboManager)
-    {
-        pop.clear();
-        int i;
-        for (i = 0; i < popSize; i++)
-        {
-            pop.add(new RoboboDNA(roboboManager));
-        }
-    }
-
     public void init(int popSize, IRob rob)
     {
         pop.clear();
