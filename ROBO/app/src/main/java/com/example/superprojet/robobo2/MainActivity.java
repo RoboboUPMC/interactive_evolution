@@ -652,12 +652,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         return mot;
     }
     public RoboboDNA remplirDNA  (String resultat){
-        RoboboDNA rDNA=new RoboboDNA(/*roboboManager,*/ "");
-        String [] mot  = resultat.split(" ");
-
-        for(int i=0;i<mot.length;i=i+4){
-                   rDNA.getGenotype().add(new RoboboGene(/*roboboManager,*/mot[i],Integer.parseInt(mot[i+1]),Integer.parseInt(mot[i+2]),Long.parseLong(mot[i+3])));
-        }
+        RoboboDNA rDNA=new RoboboDNA(/*roboboManager,*/ resultat);
         return rDNA;
     }
 }
