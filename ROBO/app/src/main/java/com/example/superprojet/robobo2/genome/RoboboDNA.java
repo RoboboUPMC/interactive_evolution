@@ -31,8 +31,13 @@ public class RoboboDNA {
         }
 
     }
-    public RoboboDNA(/*RoboboManager roboboManager ,*/String s){/*en attendant*/
+    public RoboboDNA(/*RoboboManager roboboManager ,*/String s){
         /*this.roboboManager = roboboManager;*/
+        String [] mot  = s.split(" ");
+
+        for(int i=0;i<mot.length;i=i+4){
+            this.getGenotype().add(new RoboboGene(/*roboboManager,*/mot[i],Integer.parseInt(mot[i+1]),Integer.parseInt(mot[i+2]),Long.parseLong(mot[i+3])));
+        }
     }
 
     public void mutate(){
