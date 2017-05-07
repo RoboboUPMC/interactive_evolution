@@ -48,8 +48,13 @@ public class RoboboDNA {
         }
 
     }
-    public RoboboDNA(/*RoboboManager roboboManager ,*/String s){/*en attendant*/
-        /*this.roboboManager = roboboManager;*/
+    public RoboboDNA(IRob r ,String s){
+        rob = r;
+        String [] mot  = s.split(" ");
+
+        for(int i=0;i<mot.length;i=i+4){
+            this.getGenotype().add(new RoboboGene(rob,mot[i],Integer.parseInt(mot[i+1]),Integer.parseInt(mot[i+2]),Long.parseLong(mot[i+3])));
+        }
     }
 
     public void mutate(){
