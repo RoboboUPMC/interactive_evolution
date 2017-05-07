@@ -11,6 +11,9 @@
     <string name="bluetooth_button">connect bluetooth</string>
     <string name="resetPopupTitle">Reset population</string>
     <string name="resetPopupContent">This will reset the entire population to a new random one. Are you sure this is what you want?</string>
+    <string name="presavePopupTitle">Saving Behavior</string>
+    <string name="preSavePopupContent">In order to save a behavior you must select a single behavior from the list (just one, no more, no less).</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="ok">OK</string>
 </resources>
