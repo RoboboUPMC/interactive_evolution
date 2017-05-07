@@ -619,18 +619,32 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     try {
                         resultat[0] =charger(nom);
                         roboPop.getPop().add(remplirDNA(resultat[0]));
-                        
                          setContentView(R.layout.behavior_generator);
                         atMainview = false;
 
                         LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
-                        /*parent.removeAllViews();*/
+
+                        // check that parent has no children (remove all children otherwise)
+                        parent.removeAllViews();
+
                         ViewGroup.LayoutParams params = parent.getLayoutParams();
                         Point size = new Point();
                         getWindowManager().getDefaultDisplay().getSize(size);
                         params.height = size.y / 10;
+
+                        int counter;
+                        for (counter = 0; counter < roboPop.getPop().size()-1; counter++) {
+                            //for (counter = 0; counter < myList.size(); counter++) {
+                            View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
+                            child.setId(pos);
+                            child.setLayoutParams(params);
+                            EditText editText = (EditText) child.findViewById(R.id.theTextField);
+                            editText.setText("Behavior " + (counter+1));
+                            pos++;
+                            parent.addView(child);
+                        }
                         View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
-                        child.setId(roboPop.getPop().size()-1);
+                        child.setId(pos);
                         child.setLayoutParams(params);
                         EditText editText = (EditText) child.findViewById(R.id.theTextField);
                         editText.setText(nom);
