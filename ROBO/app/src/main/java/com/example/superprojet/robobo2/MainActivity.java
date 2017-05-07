@@ -630,7 +630,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                         getWindowManager().getDefaultDisplay().getSize(size);
                         params.height = size.y / 10;
                         View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
-                        child.setId(roboPop.getPop().size()+1);
+                        child.setId(roboPop.getPop().size()-1);
                         child.setLayoutParams(params);
                         EditText editText = (EditText) child.findViewById(R.id.theTextField);
                         editText.setText(nom);
