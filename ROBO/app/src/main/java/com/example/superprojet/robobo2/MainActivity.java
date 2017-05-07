@@ -401,7 +401,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 for (counter = 0; counter < parent.getChildCount(); counter++) {
                     CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
                     if (checkBox.isChecked()) {
-                        //chosen.add(myList.get(counter));
                         if (toSave == null)
                             toSave = roboPop.getPop().get(counter);
                         else
@@ -419,6 +418,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 else
                 {
                     Log.d("onClickOptions", "saving...");
+                    boiteSauvegarde(toSave);
                 }
                 // saves the selected behavior to a file
                 // displays a popup, clears all behaviors, sets roboPopInit = false
