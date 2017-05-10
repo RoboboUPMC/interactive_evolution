@@ -130,7 +130,7 @@ public class RoboboDNA {
             double[] action = sim.mvmtToAction(mv);
             if(action[0] == 0){
                 sim.execAtion(action);
-                im.setPixel(((int) sim.getPosition()[0]),( (int)sim.getPosition()[1]), Color.YELLOW);
+                im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
             }
             else{
                 for(int i = 0; i < 25; i++){
