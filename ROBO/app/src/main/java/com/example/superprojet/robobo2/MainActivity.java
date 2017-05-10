@@ -384,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     roboPopInit = true;
                     Log.d("onClickMain", "initialize RoboPop");
                 }
+                drawImages();
                 displayBGen(button);
                 break;
             case R.id.main_activity_run_test :
