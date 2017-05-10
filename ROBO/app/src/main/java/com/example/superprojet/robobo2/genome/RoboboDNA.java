@@ -141,7 +141,7 @@ public class RoboboDNA {
             //System.out.println("Apres l'action, le robobo est en " + sim.position.toString() + "avec une vitesse " + sim.vitesse);
         }
 
-        im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.RED);
+        im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.RED);
         return im;
     }
 
