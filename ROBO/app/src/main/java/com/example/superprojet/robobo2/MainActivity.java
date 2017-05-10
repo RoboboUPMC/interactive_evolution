@@ -633,6 +633,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                         params.height = size.y / 10;
 
                         int counter;
+                        int pos = 0;
                         for (counter = 0; counter < roboPop.getPop().size()-1; counter++) {
                             //for (counter = 0; counter < myList.size(); counter++) {
                             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
