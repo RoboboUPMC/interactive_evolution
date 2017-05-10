@@ -20,7 +20,7 @@ import java.util.Random;
 /**
  * Created by Quentin on 2017/04/05.
  */
-
+//a
 public class RoboboDNA {
 
     public IRob rob;
