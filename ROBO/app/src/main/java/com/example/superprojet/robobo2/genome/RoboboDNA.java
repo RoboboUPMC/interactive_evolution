@@ -122,9 +122,8 @@ public class RoboboDNA {
 
     public Bitmap DNAtoImage(){
         RoboboDNASim sim = new RoboboDNASim();
-        int[] colors = new int[4];
-        colors[0] = 255; colors[1] = 0; colors[2] = 0; colors[3] = 0;
-        Bitmap im = Bitmap.createBitmap(colors, 200,200, Bitmap.Config.ARGB_8888);
+        Bitmap im = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
+        im.setHasAlpha(false);
 
         im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.BLUE);
         for(RoboboGene gene: this.getGenotype()){

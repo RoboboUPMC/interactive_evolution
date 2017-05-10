@@ -429,6 +429,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     myList.remove(s);
                 }
                 */
+                drawImages();
                 displayBGen(button);
                 Log.d("onClickOptions", parent_list.toString());
                 break;
