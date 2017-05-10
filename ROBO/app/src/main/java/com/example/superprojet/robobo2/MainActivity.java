@@ -624,7 +624,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
                         LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
 
-                        // check that parent has no children (remove all children otherwise)
+                        
                         parent.removeAllViews();
 
                         ViewGroup.LayoutParams params = parent.getLayoutParams();
@@ -633,8 +633,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                         params.height = size.y / 10;
 
                         int counter;
+                        int pos=0;
                         for (counter = 0; counter < roboPop.getPop().size()-1; counter++) {
-                            //for (counter = 0; counter < myList.size(); counter++) {
+                            
                             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
                             child.setId(pos);
                             child.setLayoutParams(params);
