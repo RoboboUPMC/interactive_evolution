@@ -2,6 +2,7 @@ package com.example.superprojet.robobo2;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     public RoboboPopulation roboPop;
     public Boolean roboPopInit;
     public ArrayList<Integer> parent_list;
+    public ArrayList<Bitmap> image_list;
     private AlertDialog resetPopup;
     private AlertDialog presavePopup;
     private int basicPopSize = 10;
@@ -247,7 +250,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         roboPop = new RoboboPopulation();
         roboPopInit = false;
-        parent_list = new ArrayList<Integer>();
+        parent_list = new ArrayList<>();
+        image_list = new ArrayList<>();
         NSpop = new RoboboPopulation();// maybe not needed here
 
         // generating popups
@@ -339,9 +343,22 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             child.setLayoutParams(params);
             EditText editText = (EditText) child.findViewById(R.id.theTextField);
             editText.setText("Behavior " + (counter+1));
+            ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
+            imageView.setImageBitmap(image_list.get(i));
             pos++;
 
             parent.addView(child);
+        }
+    }
+
+    public void drawImages()
+    {
+        int i;
+        ArrayList<RoboboDNA> pop = roboPop.getPop();
+        image_list.clear();
+        for (i=0; i<pop.size(); i++)
+        {
+            image_list.add(pop.get(i).DNAtoImage());
         }
     }
 
@@ -367,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     roboPopInit = true;
                     Log.d("onClickMain", "initialize RoboPop");
                 }
+                drawImages();
                 displayBGen(button);
                 break;
             case R.id.main_activity_run_test :
