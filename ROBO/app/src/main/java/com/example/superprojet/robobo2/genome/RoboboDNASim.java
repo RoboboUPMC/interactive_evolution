@@ -26,10 +26,9 @@ public class RoboboDNASim {
         this.alpha_f = 0.0002;
         this.beta_f = 0.0005;
 
-        this.position = new Vecteur((double) 100, (double) 100);
+        this.position = new Vecteur((double) 150, (double) 150);
         this.direction = new Vecteur((double) 0, (double) -1);
 
-        //System.out.println("Le robobo est en" + this.position.toString());
     }
 
     public double[] getPosition(){
@@ -37,7 +36,7 @@ public class RoboboDNASim {
         return ret;
     }
 
-    public void execAtion(double[] action){
+    public void execAction(double[] action){
         direction = direction.rotation(action[1] * braquage);
         direction = direction.normaliser();
         this.vitesse -= alpha_f;

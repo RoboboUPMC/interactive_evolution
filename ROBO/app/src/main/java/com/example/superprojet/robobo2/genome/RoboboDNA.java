@@ -122,7 +122,7 @@ public class RoboboDNA {
 
     public Bitmap DNAtoImage(){
         RoboboDNASim sim = new RoboboDNASim();
-        Bitmap im = Bitmap.createBitmap(200, 200, Bitmap.Config.ARGB_8888);
+        Bitmap im = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
         im.setHasAlpha(false);
 
         im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.BLUE);
@@ -130,19 +130,38 @@ public class RoboboDNA {
             RoboboGene.MvmtType mv = gene.mvmtType;
             double[] action = sim.mvmtToAction(mv);
             if(action[0] == 0){
-                sim.execAtion(action);
-                im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
+                sim.execAction(action);
+
+                /*
+                si la trajectoire sort de l'image, on ne l'ecrit pas
+                 */
+                if((int)sim.getPosition()[0] < (im.getWidth()) && (int)sim.getPosition()[0] >= 0){
+                    if((int)sim.getPosition()[1] < im.getHeight() && (int)sim.getPosition()[1] >= 0){
+                        im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.YELLOW);
+                    }
+                }
+                //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
             }
             else{
                 for(int i = 0; i < 25; i++){
-                    sim.execAtion(action);
-                    im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
+                    sim.execAction(action);
+                    if((int)sim.getPosition()[0] < (im.getWidth()) && (int)sim.getPosition()[0] >= 0){
+                        if((int)sim.getPosition()[1] < im.getHeight() && (int)sim.getPosition()[1] >= 0){
+                            im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.YELLOW);
+                        }
+                    }
+                    //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
                 }
             }
             //System.out.println("Apres l'action, le robobo est en " + sim.position.toString() + "avec une vitesse " + sim.vitesse);
         }
 
-        im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.RED);
+        if((int)sim.getPosition()[0] < (im.getWidth()) && (int)sim.getPosition()[0] >= 0){
+            if((int)sim.getPosition()[1] < im.getHeight() && (int)sim.getPosition()[1] >= 0){
+                im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.RED);
+            }
+        }
+        //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.RED);
         return im;
     }
 
