@@ -159,12 +159,14 @@ public class RoboboDNA {
 
         for(int[] p: pixels){
             if(p[0]>maxX){
-                maxX = p[0]+10;
+                maxX = p[0];
             }
             if(p[1]>maxY){
-                maxY = p[1]+10;
+                maxY = p[1];
             }
         }
+        maxX+=10;
+        maxY+=10;
 
         imWidth = (int) 1.1*Math.max(150, maxX);
         imHeight = (int) 1.1*Math.max(150, maxY);
@@ -174,7 +176,7 @@ public class RoboboDNA {
         for(int i = 0; i< pixels.size(); i++){
             int x = pixels.get(i)[0];
             int y = pixels.get(i)[1];
-
+            Log.d("img" , String.valueOf(x) + " " +  String.valueOf(y) + " " +  String.valueOf(imWidth) + " " +  String.valueOf(imHeight));
             if(i<=10){
                 im.setPixel(x,y, Color.RED);
             }
