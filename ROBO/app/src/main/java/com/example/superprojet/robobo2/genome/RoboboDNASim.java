@@ -52,7 +52,7 @@ public class RoboboDNASim {
         double[] action = {0,0};
         switch (mv){
             case FORWARD:
-                action[0] = 10;
+                action[0] = 2;
                 action[1] = 0;
                 break;
             case FORWARD_LEFT:
