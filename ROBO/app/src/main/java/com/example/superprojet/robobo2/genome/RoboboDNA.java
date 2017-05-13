@@ -180,7 +180,7 @@ public class RoboboDNA {
             else if(i >= (pixels.size()-10)){
                 im.setPixel(x,y, Color.BLUE);
             }
-            else if(i%ival==0){
+            else if(i%(ival+1)==0){
                 im.setPixel(x,y, Color.YELLOW);
             }
             else{
