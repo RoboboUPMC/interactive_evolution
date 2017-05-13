@@ -199,8 +199,9 @@ public class RoboboDNA {
             }
         }
 
-        //Bitmap res = Bitmap.createScaledBitmap(im, 100, 100, true);
-        return im;
+        Bitmap res = Bitmap.createScaledBitmap(im, 50, 50, true);
+        return res;
+        //return im;
     }
 
 
