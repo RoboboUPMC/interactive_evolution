@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         image_list.clear();
         for (i=0; i<pop.size(); i++)
         {
-            image_list.add(pop.get(i).DNAtoImage(i));
+            image_list.add(pop.get(i).DNAtoImage2(i));
         }
     }
 

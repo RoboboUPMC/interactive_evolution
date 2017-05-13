@@ -125,7 +125,7 @@ public class RoboboDNA {
     }
 
 
-    public Bitmap DNAtoImage2(){
+    public Bitmap DNAtoImage2(int ival){
         RoboboDNASim sim = new RoboboDNASim();
         ArrayList<int[]> pixels = new ArrayList<int[]>();
         int maxX = 0;
@@ -170,6 +170,24 @@ public class RoboboDNA {
         imHeight = (int) 1.1*Math.max(150, maxY);
         Bitmap im = Bitmap.createBitmap(imWidth, imHeight, Bitmap.Config.ARGB_8888);
         im.setHasAlpha(false);
+
+        for(int i = 0; i< pixels.size(); i++){
+            int x = pixels.get(i)[0];
+            int y = pixels.get(i)[1];
+            if(i<=10){
+                im.setPixel(x,y, Color.RED);
+            }
+            else if(i >= (pixels.size()-10)){
+                im.setPixel(x,y, Color.BLUE);
+            }
+            else if(i%ival==0){
+                im.setPixel(x,y, Color.YELLOW);
+            }
+            else{
+                im.setPixel(x,y, Color.GREEN);
+            }
+        }
+
         return im;
     }
 
