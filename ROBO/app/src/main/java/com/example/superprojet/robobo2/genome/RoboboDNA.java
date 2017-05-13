@@ -128,8 +128,10 @@ public class RoboboDNA {
     public Bitmap DNAtoImage2(int ival){
         RoboboDNASim sim = new RoboboDNASim();
         ArrayList<int[]> pixels = new ArrayList<int[]>();
-        int maxX = 0;
-        int maxY = 0;
+        int maxX = (int) sim.getPosition()[0];
+        int minX = (int) sim.getPosition()[0];
+        int maxY = (int) sim.getPosition()[1];
+        int minY = (int) sim.getPosition()[1];
         int imHeight;
         int imWidth;
 
@@ -164,18 +166,24 @@ public class RoboboDNA {
             if(p[1]>maxY){
                 maxY = p[1];
             }
-        }
-        maxX+=10;
-        maxY+=10;
+            if(p[0]<minX){
+                minX = p[0];
+            }
 
-        imWidth = (int) 1.1*Math.max(200, maxX);
-        imHeight = (int) 1.1*Math.max(200, maxY);
+            if(p[1]<minY){
+                maxY = p[1];
+            }
+        }
+
+        imWidth = (int) 1.1*Math.max(200, (maxX-minX)+10);
+        imHeight = (int) 1.1*Math.max(200, (maxY-minY)+10);
+
         Bitmap im = Bitmap.createBitmap(imWidth, imHeight, Bitmap.Config.ARGB_8888);
         im.setHasAlpha(false);
 
         for(int i = 0; i< pixels.size(); i++){
-            int x = pixels.get(i)[0];
-            int y = pixels.get(i)[1];
+            int x = pixels.get(i)[0] - minX;
+            int y = pixels.get(i)[1] - minY;
 
             if(i<=10){
                 im.setPixel(x,y, Color.RED);
