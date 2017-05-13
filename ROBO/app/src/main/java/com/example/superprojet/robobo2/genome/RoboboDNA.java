@@ -200,7 +200,8 @@ public class RoboboDNA {
             }
         }
 
-        Bitmap res = Bitmap.createScaledBitmap(im, 50, 50, true);
+        //Bitmap res = Bitmap.createScaledBitmap(im, 50, 50, true);
+        /*
         int width = im.getWidth();
         int height = im.getHeight();
         float scaleWidth = ((float) 100) / width;
@@ -215,8 +216,9 @@ public class RoboboDNA {
                 im, 0, 0, width, height, matrix, false);
         im.recycle();
         return resizedBitmap;
+        */
         //return res;
-        //return im;
+        return im;
     }
 
 
