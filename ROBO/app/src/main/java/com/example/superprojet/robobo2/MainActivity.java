@@ -670,22 +670,22 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
                         int counter;
                         int pos = 0;
-                        for (counter = 0; counter < roboPop.getPop().size()-1; counter++) {
-                            //for (counter = 0; counter < myList.size(); counter++) {
+                        drawImages();
+                        for (counter = 0; counter < roboPop.getPop().size(); counter++) {
                             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
                             child.setId(pos);
                             child.setLayoutParams(params);
                             //EditText editText = (EditText) child.findViewById(R.id.theTextField);
                             //editText.setText("Behavior " + (counter+1));
+                            
+                            ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
+                            Bitmap image = image_list.get(counter);
+                            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                            imageView.setImageBitmap(image);
+                            
                             pos++;
                             parent.addView(child);
                         }
-                        View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
-                        child.setId(pos);
-                        child.setLayoutParams(params);
-                        //EditText editText = (EditText) child.findViewById(R.id.theTextField);
-                        //editText.setText(nom);
-                        parent.addView(child);
                         
                     } catch (IOException e) {
                         e.printStackTrace();
