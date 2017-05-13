@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             //editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
             Bitmap image = image_list.get(counter);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setImageBitmap(image);
             pos++;
 

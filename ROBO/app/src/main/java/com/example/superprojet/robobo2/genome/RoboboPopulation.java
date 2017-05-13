@@ -319,6 +319,11 @@ public class RoboboPopulation {
 
 
         while(!nbOcc.equals(Arrays.asList(new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 }))){
+            if(chosenMvmt == -1){
+                do {
+                    chosenMvmt = r.nextInt(8);
+                }while(nbOcc.get(chosenMvmt) == 0);
+            }
 
             Log.d("xOver", "chosenMvmt" +" "+chosenMvmt.toString());
             Log.d("xOver", "nbOcc "+nbOcc.toString());
@@ -348,9 +353,31 @@ public class RoboboPopulation {
                     bestNeigh = adjaTable[chosenMvmt][i];
                 }
             }
-            if(candidates.size() == 0)
-                break;
-            chosenMvmt = candidates.get(r.nextInt(candidates.size()));//bug here
+
+
+            int counter = 0;
+             while(counter < candidates.size()){
+                 counter++;
+
+                 chosenMvmt = candidates.get(r.nextInt(candidates.size()));//bug here
+
+                 if(!Arrays.asList(adjaTable[chosenMvmt]).equals(Arrays.asList(new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 }))){
+                     break;
+                 }
+
+                 nbOcc.set(chosenMvmt, 0);
+                 for(int i = 0 ; i < 8 ; i++){
+                     adjaTable[i][chosenMvmt] = 0;
+                 }
+
+             }
+
+
+
+             if(counter == candidates.size()){
+                 chosenMvmt = -1;
+             }
+
             index += side;
 
         }
