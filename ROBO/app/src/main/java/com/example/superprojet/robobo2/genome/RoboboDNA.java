@@ -52,7 +52,7 @@ public class RoboboDNA {
         int currSize = this.genotype.size();
 
         //set arbitrarily, may change
-        int idealSize = 10;
+        int idealSize = 20;
 
         ArrayList<RoboboGene> newGenotype = new ArrayList<>();
         float mutaProba = 1f/currSize;
@@ -63,11 +63,15 @@ public class RoboboDNA {
 
         for(int i = 0; i<currSize; i++){
             r = random.nextFloat();
-            if(r>=lossProba){
-                currGene = this.getGenotype().get(i);
-                currGene.mutate();
-                newGenotype.add(currGene);
+            if(r < mutaProba)
+            {
+                if(r>=lossProba){
+                    currGene = this.getGenotype().get(i);
+                    currGene.mutate();
+                    newGenotype.add(currGene);
+                }
             }
+            else newGenotype.add(this.getGenotype().get(i));
         }
 
         r = random.nextFloat();
@@ -120,6 +124,7 @@ public class RoboboDNA {
         }
     }
 
+
     public Bitmap DNAtoImage2(){
         RoboboDNASim sim = new RoboboDNASim();
         ArrayList<int[]> pixels = new ArrayList<int[]>();
@@ -168,7 +173,9 @@ public class RoboboDNA {
         return im;
     }
 
-    public Bitmap DNAtoImage(){
+
+    public Bitmap DNAtoImage(int ival){
+
         RoboboDNASim sim = new RoboboDNASim();
         Bitmap im = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
         im.setHasAlpha(false);
