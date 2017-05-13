@@ -3,18 +3,12 @@
     android:orientation="horizontal"
     android:layout_gravity="end"
     android:layout_width="match_parent"
-    android:layout_height="32pt">
-    <EditText
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:id="@+id/theTextField"
-        android:enabled="false"
-        android:focusable="false"
-        android:layout_weight="2"/>
+    android:layout_height="wrap_content">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/theImage"
+        android:scaleType="centerCrop"
         android:layout_weight="2"/>
     <CheckBox
         android:layout_width="0dp"

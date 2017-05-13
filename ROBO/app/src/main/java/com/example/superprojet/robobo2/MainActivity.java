@@ -341,8 +341,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
             child.setId(pos);
             child.setLayoutParams(params);
-            EditText editText = (EditText) child.findViewById(R.id.theTextField);
-            editText.setText("Behavior " + (counter+1));
+            //EditText editText = (EditText) child.findViewById(R.id.theTextField);
+            //editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
             imageView.setImageBitmap(image_list.get(counter));
             pos++;
@@ -358,7 +358,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         image_list.clear();
         for (i=0; i<pop.size(); i++)
         {
-            Log.d("drawImages","drawing new image");
             image_list.add(pop.get(i).DNAtoImage(i));
         }
     }
@@ -659,16 +658,16 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
                             child.setId(pos);
                             child.setLayoutParams(params);
-                            EditText editText = (EditText) child.findViewById(R.id.theTextField);
-                            editText.setText("Behavior " + (counter+1));
+                            //EditText editText = (EditText) child.findViewById(R.id.theTextField);
+                            //editText.setText("Behavior " + (counter+1));
                             pos++;
                             parent.addView(child);
                         }
                         View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
                         child.setId(pos);
                         child.setLayoutParams(params);
-                        EditText editText = (EditText) child.findViewById(R.id.theTextField);
-                        editText.setText(nom);
+                        //EditText editText = (EditText) child.findViewById(R.id.theTextField);
+                        //editText.setText(nom);
                         parent.addView(child);
                         
                     } catch (IOException e) {
