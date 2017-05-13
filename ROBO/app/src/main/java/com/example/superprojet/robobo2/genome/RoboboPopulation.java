@@ -283,13 +283,13 @@ public class RoboboPopulation {
             }
             Random r = new Random();
             i = indexes.get(r.nextInt(indexes.size()));
-            nbOcc.set(i, nbOcc.get(i)==null?1:nbOcc.get(i)+1);
+            //nbOcc.set(i, nbOcc.get(i)==null?1:nbOcc.get(i)+1);
+            nbOcc.set(i, nbOcc.get(i)==0?1:nbOcc.get(i)+1);
             max = Collections.max(mean);
         }
 
         Log.d("xOver", "nbOcc "+nbOcc.toString());
-        for(Integer[] i : adjaTable)
-            Log.d("xOver", "adjatable "+Arrays.asList(i).toString());
+
 
         for(int i = 0 ; i < p1.getGenotype().size() ; i++){
             adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) < p1.getGenotype().size()-1 ? i+1 : 0).getMvmtType().ordinal()] +=1;
@@ -300,7 +300,7 @@ public class RoboboPopulation {
             adjaTable[p2.getGenotype().get(i).getMvmtType().ordinal()][p2.getGenotype().get((i-1) >= 0 ? i-1 : p1.getGenotype().size()-1).getMvmtType().ordinal()] +=1;
         }
         for(int i = 0 ; i < nbOcc.size() ; i++){
-            if(nbOcc.get(i) == null){
+            if(nbOcc.get(i) == 0){
                 for(int j = 0 ; j < 8 ; j++){
                     adjaTable[i][j] = 0;
                 }
@@ -315,6 +315,11 @@ public class RoboboPopulation {
         }while(nbOcc.get(chosenMvmt) == 0);
         Integer index = 0;
         Integer side = r.nextInt(1);
+
+        for(Integer[] i : adjaTable)
+            Log.d("xOver", "adjatable "+Arrays.asList(i).toString());
+
+
         while(!nbOcc.equals(Arrays.asList(new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 }))){
 
             // update of the number of occurrences table and adjacency table
