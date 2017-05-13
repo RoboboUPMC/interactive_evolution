@@ -193,6 +193,7 @@ public class RoboboGene implements Runnable{
 
     @Override
     public void run() {
+        Random random = new Random();
 //        rob.addRobStatusListener(listener);
 //
 //        try {
@@ -209,6 +210,12 @@ public class RoboboGene implements Runnable{
 
         try {
             rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
+            int i = random.nextInt(9) + 1;
+            int r = random.nextInt(255);
+            int g = random.nextInt(256);
+            int b = random.nextInt(256);
+            Color c = new Color(r,g,b);
+            rob.setLEDColor(i,c);
 //            while(rightVelocity!=0 || leftVelocity!=0){
 //                Thread.sleep(10L);// on attend que le robot ait terminé son action
 //            }

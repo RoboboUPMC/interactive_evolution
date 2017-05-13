@@ -13,6 +13,7 @@ import com.mytechia.robobo.rob.BluetoothRobInterfaceModule;
 import com.mytechia.robobo.rob.IRob;
 import com.mytechia.robobo.rob.MoveMTMode;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -120,6 +121,14 @@ public class RoboboDNA {
             try {
                 Thread.sleep(gene.getduration());
             } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        com.mytechia.robobo.util.Color off = new com.mytechia.robobo.util.Color(0,0,0);
+        for(int i = 1; i <= 9; i++){
+            try {
+                rob.setLEDColor(i, off);
+            } catch (InternalErrorException e) {
                 e.printStackTrace();
             }
         }
