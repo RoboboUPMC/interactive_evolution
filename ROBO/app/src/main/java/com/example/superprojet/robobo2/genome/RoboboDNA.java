@@ -120,6 +120,54 @@ public class RoboboDNA {
         }
     }
 
+    public Bitmap DNAtoImage2(){
+        RoboboDNASim sim = new RoboboDNASim();
+        ArrayList<int[]> pixels = new ArrayList<int[]>();
+        int maxX = 0;
+        int maxY = 0;
+        int imHeight;
+        int imWidth;
+
+        //im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.BLUE);
+        pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
+        for(RoboboGene gene: this.getGenotype()){
+            RoboboGene.MvmtType mv = gene.mvmtType;
+            double[] action = sim.mvmtToAction(mv);
+            if(action[0] == 0){
+                sim.execAction(action);
+                //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
+                pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
+            }
+            else{
+                for(int i = 0; i < 25; i++){
+                    sim.execAction(action);
+                    pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
+                    //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
+                }
+            }
+            //System.out.println("Apres l'action, le robobo est en " + sim.position.toString() + "avec une vitesse " + sim.vitesse);
+        }
+
+        pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
+        //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.RED);
+
+
+        for(int[] p: pixels){
+            if(p[0]>maxX){
+                maxX = p[0];
+            }
+            if(p[1]>maxY){
+                maxY = p[1];
+            }
+        }
+
+        imWidth = (int) 1.1*Math.max(150, maxX);
+        imHeight = (int) 1.1*Math.max(150, maxY);
+        Bitmap im = Bitmap.createBitmap(imWidth, imHeight, Bitmap.Config.ARGB_8888);
+        im.setHasAlpha(false);
+        return im;
+    }
+
     public Bitmap DNAtoImage(){
         RoboboDNASim sim = new RoboboDNASim();
         Bitmap im = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
