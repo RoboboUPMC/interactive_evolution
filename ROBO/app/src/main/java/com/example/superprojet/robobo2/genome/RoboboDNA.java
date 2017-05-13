@@ -3,6 +3,7 @@ package com.example.superprojet.robobo2.genome;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.util.Log;
 
 import com.mytechia.commons.framework.exception.InternalErrorException;
@@ -200,7 +201,21 @@ public class RoboboDNA {
         }
 
         Bitmap res = Bitmap.createScaledBitmap(im, 50, 50, true);
-        return res;
+        int width = im.getWidth();
+        int height = im.getHeight();
+        float scaleWidth = ((float) 100) / width;
+        float scaleHeight = ((float) 150) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                im, 0, 0, width, height, matrix, false);
+        im.recycle();
+        return resizedBitmap;
+        //return res;
         //return im;
     }
 
