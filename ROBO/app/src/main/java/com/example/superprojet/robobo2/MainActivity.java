@@ -349,8 +349,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             //editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
             Bitmap image = image_list.get(counter);
-            RoboboDNASim.scaleToFitWidth(image, 300);
-            RoboboDNASim.scaleToFitHeight(image, 160);
+            image = RoboboDNASim.scaleToFitWidth(image, 300);
+            image = RoboboDNASim.scaleToFitHeight(image, 160);
             imageView.setImageBitmap(image);
             pos++;
 
