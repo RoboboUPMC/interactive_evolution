@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
     //ArrayList<String> myList = new ArrayList<>();
     static Boolean atMainview;
+    private ProgressDialog pDialog;
 
     public RoboboManager roboboManager;
     public RoboboApp app;
@@ -341,8 +342,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
             child.setId(pos);
             child.setLayoutParams(params);
-            EditText editText = (EditText) child.findViewById(R.id.theTextField);
-            editText.setText("Behavior " + (counter+1));
+            //EditText editText = (EditText) child.findViewById(R.id.theTextField);
+            //editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
             imageView.setImageBitmap(image_list.get(counter));
             pos++;
@@ -358,7 +359,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         image_list.clear();
         for (i=0; i<pop.size(); i++)
         {
-            Log.d("drawImages","drawing new image");
             image_list.add(pop.get(i).DNAtoImage(i));
         }
     }
@@ -423,7 +423,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     }
                 }
                 // insert real purpose here
-                roboPop = roboPop.noveltySearch(NSpop, parent_list);
+                new asyncNS().execute();
+                //roboPop = roboPop.noveltySearch(NSpop, parent_list);
                 /*
                 for (String s : chosen) {
                     //parent.removeView(parent.findViewById(i));
@@ -659,16 +660,16 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
                             child.setId(pos);
                             child.setLayoutParams(params);
-                            EditText editText = (EditText) child.findViewById(R.id.theTextField);
-                            editText.setText("Behavior " + (counter+1));
+                            //EditText editText = (EditText) child.findViewById(R.id.theTextField);
+                            //editText.setText("Behavior " + (counter+1));
                             pos++;
                             parent.addView(child);
                         }
                         View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
                         child.setId(pos);
                         child.setLayoutParams(params);
-                        EditText editText = (EditText) child.findViewById(R.id.theTextField);
-                        editText.setText(nom);
+                        //EditText editText = (EditText) child.findViewById(R.id.theTextField);
+                        //editText.setText(nom);
                         parent.addView(child);
                         
                     } catch (IOException e) {
@@ -731,8 +732,38 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         return mot;
     }
-  public RoboboDNA remplirDNA  (String resultat){
+    public RoboboDNA remplirDNA  (String resultat){
         RoboboDNA rDNA=new RoboboDNA(rob, resultat);
         return rDNA;
+    }
+
+    private class asyncNS extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            roboPop = roboPop.noveltySearch(NSpop, parent_list);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            Log.d("onPostExecute", "done");
+        }
+
     }
 }

@@ -191,35 +191,35 @@ public class RoboboPopulation {
             switch (mvmt.getMvmtType()) {
 
                 case FORWARD:
-                    mean.set(a, .5f);
+                    mean.set(a, mean.get(a) + .5f);
                     break;
 
                 case BACKWARDS:
-                    mean.set(b, .5f);
+                    mean.set(b, mean.get(b) + .5f);
                     break;
 
                 case TURN_LEFT:
-                    mean.set(c, .5f);
+                    mean.set(c, mean.get(c) + .5f);
                     break;
 
                 case TURN_RIGHT:
-                    mean.set(d, .5f);
+                    mean.set(d, mean.get(d) + .5f);
                     break;
 
                 case FORWARD_LEFT:
-                    mean.set(e, .5f);
+                    mean.set(e, mean.get(e) + .5f);
                     break;
 
                 case FORWARD_RIGHT:
-                    mean.set(f, .5f);
+                    mean.set(f, mean.get(f) + .5f);
                     break;
 
                 case BACKWARDS_LEFT:
-                    mean.set(g, .5f);
+                    mean.set(g, mean.get(g) + .5f);
                     break;
 
                 case BACKWARDS_RIGHT:
-                    mean.set(h, .5f);
+                    mean.set(h, mean.get(h) + .5f);
                     break;
 
             }
@@ -228,39 +228,40 @@ public class RoboboPopulation {
             switch (mvmt.getMvmtType()) {
 
                 case FORWARD:
-                    mean.set(a, .5f);
+                    mean.set(a, mean.get(a) + .5f);
                     break;
 
                 case BACKWARDS:
-                    mean.set(b, .5f);
+                    mean.set(b, mean.get(b) + .5f);
                     break;
 
                 case TURN_LEFT:
-                    mean.set(c, .5f);
+                    mean.set(c, mean.get(c) + .5f);
                     break;
 
                 case TURN_RIGHT:
-                    mean.set(d, .5f);
+                    mean.set(d, mean.get(d) + .5f);
                     break;
 
                 case FORWARD_LEFT:
-                    mean.set(e, .5f);
+                    mean.set(e, mean.get(e) + .5f);
                     break;
 
                 case FORWARD_RIGHT:
-                    mean.set(f, .5f);
+                    mean.set(f, mean.get(f) + .5f);
                     break;
 
                 case BACKWARDS_LEFT:
-                    mean.set(g, .5f);
+                    mean.set(g, mean.get(g) + .5f);
                     break;
 
                 case BACKWARDS_RIGHT:
-                    mean.set(h, .5f);
+                    mean.set(h, mean.get(h) + .5f);
                     break;
 
             }
         }
+        Log.d("xOver", "mean "+mean.toString());
 
         List<Integer> nbOcc = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0);
 
@@ -287,6 +288,7 @@ public class RoboboPopulation {
             max = Collections.max(mean);
         }
 
+        Log.d("xOver", "nbOcc "+nbOcc.toString());
 
         for(int i = 0 ; i < p1.getGenotype().size() ; i++){
             adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) < p1.getGenotype().size()-1 ? i+1 : 0).getMvmtType().ordinal()] +=1;
@@ -368,7 +370,9 @@ public class RoboboPopulation {
             k++;
             Log.d("NS", "essai : "+k.toString()+" temps : "+String.valueOf(System.currentTimeMillis() - start) + "trouvés : "+String.valueOf(offspring.size()));
             RoboboDNA child = xOver();
+            Log.d("Avant mutation", String.valueOf(child.getGenotype().size()));
             child.mutate();
+            Log.d("Avant mutation", String.valueOf(child.getGenotype().size()));
             Log.d("NS", "distance acceptable : "+safeDistance.toString());
             Boolean newEnough = true;
             for(RoboboDNA other : nspop.getPop()){
