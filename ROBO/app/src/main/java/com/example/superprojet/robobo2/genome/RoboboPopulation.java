@@ -186,40 +186,39 @@ public class RoboboPopulation {
         int g = RoboboGene.MvmtType.BACKWARDS_LEFT.ordinal();
         int h = RoboboGene.MvmtType.BACKWARDS_RIGHT.ordinal();
 
-
         for(RoboboGene mvmt : p1.getGenotype()){
             switch (mvmt.getMvmtType()) {
 
                 case FORWARD:
-                    mean.set(a, mean.get(a) + .5f);
+                    mean.set(a, mean.get(a) + 1.f);
                     break;
 
                 case BACKWARDS:
-                    mean.set(b, mean.get(b) + .5f);
+                    mean.set(b, mean.get(b) + 1.f);
                     break;
 
                 case TURN_LEFT:
-                    mean.set(c, mean.get(c) + .5f);
+                    mean.set(c, mean.get(c) + 1.f);
                     break;
 
                 case TURN_RIGHT:
-                    mean.set(d, mean.get(d) + .5f);
+                    mean.set(d, mean.get(d) + 1.f);
                     break;
 
                 case FORWARD_LEFT:
-                    mean.set(e, mean.get(e) + .5f);
+                    mean.set(e, mean.get(e) + 1.f);
                     break;
 
                 case FORWARD_RIGHT:
-                    mean.set(f, mean.get(f) + .5f);
+                    mean.set(f, mean.get(f) + 1.f);
                     break;
 
                 case BACKWARDS_LEFT:
-                    mean.set(g, mean.get(g) + .5f);
+                    mean.set(g, mean.get(g) + 1.f);
                     break;
 
                 case BACKWARDS_RIGHT:
-                    mean.set(h, mean.get(h) + .5f);
+                    mean.set(h, mean.get(h) + 1.f);
                     break;
 
             }
@@ -228,35 +227,35 @@ public class RoboboPopulation {
             switch (mvmt.getMvmtType()) {
 
                 case FORWARD:
-                    mean.set(a, mean.get(a) + .5f);
+                    mean.set(a, mean.get(a) + 1.f);
                     break;
 
                 case BACKWARDS:
-                    mean.set(b, mean.get(b) + .5f);
+                    mean.set(b, mean.get(b) + 1.f);
                     break;
 
                 case TURN_LEFT:
-                    mean.set(c, mean.get(c) + .5f);
+                    mean.set(c, mean.get(c) + 1.f);
                     break;
 
                 case TURN_RIGHT:
-                    mean.set(d, mean.get(d) + .5f);
+                    mean.set(d, mean.get(d) + 1.f);
                     break;
 
                 case FORWARD_LEFT:
-                    mean.set(e, mean.get(e) + .5f);
+                    mean.set(e, mean.get(e) + 1.f);
                     break;
 
                 case FORWARD_RIGHT:
-                    mean.set(f, mean.get(f) + .5f);
+                    mean.set(f, mean.get(f) + 1.f);
                     break;
 
                 case BACKWARDS_LEFT:
-                    mean.set(g, mean.get(g) + .5f);
+                    mean.set(g, mean.get(g) + 1.f);
                     break;
 
                 case BACKWARDS_RIGHT:
-                    mean.set(h, mean.get(h) + .5f);
+                    mean.set(h, mean.get(h) + 1.f);
                     break;
 
             }
@@ -289,6 +288,8 @@ public class RoboboPopulation {
         }
 
         Log.d("xOver", "nbOcc "+nbOcc.toString());
+        for(Integer[] i : adjaTable)
+            Log.d("xOver", "adjatable "+Arrays.asList(i).toString());
 
         for(int i = 0 ; i < p1.getGenotype().size() ; i++){
             adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) < p1.getGenotype().size()-1 ? i+1 : 0).getMvmtType().ordinal()] +=1;
@@ -322,7 +323,7 @@ public class RoboboPopulation {
 
             // We list all the neighbors that have the maximum adjacency with our chosen point
             for(int i = 0 ; i < 8 ; i++){
-                adjaTable[i][chosenMvmt] = nbOcc.get(chosenMvmt) == 0 ? 0 : adjaTable[i][chosenMvmt]-1;
+                adjaTable[i][chosenMvmt] = nbOcc.get(chosenMvmt) == 0 ? 0 : (adjaTable[i][chosenMvmt] == nbOcc.get(chosenMvmt)?adjaTable[i][chosenMvmt]-1:adjaTable[i][chosenMvmt]);
             }
             ArrayList<Integer> candidates = new ArrayList<>();
             Integer bestNeigh = 0;
@@ -337,11 +338,14 @@ public class RoboboPopulation {
                     bestNeigh = adjaTable[chosenMvmt][i];
                 }
             }
-
+            if(candidates.size() == 0)
+                break;
             chosenMvmt = candidates.get(r.nextInt(candidates.size()));//bug here
             index += side;
 
         }
+
+        Log.d("xOver", "pas bloqué");
 
         return new RoboboDNA(p1.rob, child);
 
