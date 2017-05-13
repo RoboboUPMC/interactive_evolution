@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         s.putContents("Taps",i.toString());
         i = i+1;
         Log.d(TAG,s.toString());
-        remoteModule.postStatus(s);//had to comment this
+//        remoteModule.postStatus(s);//had to comment this
 
         return true;
 
@@ -272,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 Log.d("MainActivity.onCreate", "rob = " + (rob==null?"null":"des trucs"));
                 roboPop.init(basicPopSize, rob);
                 NSpop.setPop(roboPop.getPop());
+                drawImages();
                 displayBGen(findViewById(R.id.behavior_generator_reset));
                 dialog.dismiss();
             }
@@ -380,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     try{
                         NSpop.setPop(roboPop.getPop());
                     }catch(java.util.ConcurrentModificationException e){
-                        Log.d("setpop : ", "Exception de merde");
+                        Log.d("setpop : ", "Exception");
                     }
                     roboPopInit = true;
                     Log.d("onClickMain", "initialize RoboPop");
@@ -431,6 +432,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     myList.remove(s);
                 }
                 */
+
+                // Temporary wait of 1sec.
+                // must wait until the novelty search is finished or there may be an exception or an incorrect number of children displayed (the number of checked parents)
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 drawImages();
                 displayBGen(button);
                 Log.d("onClickOptions", parent_list.toString());
