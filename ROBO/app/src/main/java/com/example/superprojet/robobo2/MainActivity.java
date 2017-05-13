@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         s.putContents("Taps",i.toString());
         i = i+1;
         Log.d(TAG,s.toString());
-        remoteModule.postStatus(s);
+        remoteModule.postStatus(s);//had to comment this
 
         return true;
 
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             EditText editText = (EditText) child.findViewById(R.id.theTextField);
             editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
-            imageView.setImageBitmap(image_list.get(i));
+            imageView.setImageBitmap(image_list.get(counter));
             pos++;
 
             parent.addView(child);
@@ -358,7 +358,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         image_list.clear();
         for (i=0; i<pop.size(); i++)
         {
-            image_list.add(pop.get(i).DNAtoImage());
+            Log.d("drawImages","drawing new image");
+            image_list.add(pop.get(i).DNAtoImage(i));
         }
     }
 

@@ -57,7 +57,7 @@ public class RoboboPopulation {
         return cutoffVal;
     }
 
-    public int minLevenstein(RoboboDNA individu_1)
+    public int minLevenstein(RoboboDNA individu_1)//actually maxLevenstein
     {
         int min_val = 0;
         int val;
@@ -66,7 +66,7 @@ public class RoboboPopulation {
             val = distLevenshtein(individu_1, individu_2);
             if (val > min_val){min_val = val;}
         }
-        return min_val;
+        return Math.max((min_val+1) / 2, 3);
     }
 
     public int maxLevenstein(RoboboDNA individu_1)
@@ -289,11 +289,11 @@ public class RoboboPopulation {
 
 
         for(int i = 0 ; i < p1.getGenotype().size() ; i++){
-            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) < 8 ? i+1 : 0).getMvmtType().ordinal()] +=1;
+            adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i+1) < p1.getGenotype().size()-1 ? i+1 : 0).getMvmtType().ordinal()] +=1;
             adjaTable[p1.getGenotype().get(i).getMvmtType().ordinal()][p1.getGenotype().get((i-1) >= 0 ? i-1 : p1.getGenotype().size()-1).getMvmtType().ordinal()] +=1;
         }
-        for(int i = 0 ; i < p2.getGenotype().size() ; i++){
-            adjaTable[p2.getGenotype().get(i).getMvmtType().ordinal()][p2.getGenotype().get((i+1) < 8 ? i+1 : 0).getMvmtType().ordinal()] +=1;
+        for(int i = 0 ; i < p2.getGenotype().size()-1 ; i++){
+            adjaTable[p2.getGenotype().get(i).getMvmtType().ordinal()][p2.getGenotype().get((i+1) < p1.getGenotype().size()-1 ? i+1 : 0).getMvmtType().ordinal()] +=1;
             adjaTable[p2.getGenotype().get(i).getMvmtType().ordinal()][p2.getGenotype().get((i-1) >= 0 ? i-1 : p1.getGenotype().size()-1).getMvmtType().ordinal()] +=1;
         }
         for(int i = 0 ; i < nbOcc.size() ; i++){
@@ -336,7 +336,7 @@ public class RoboboPopulation {
                 }
             }
 
-            chosenMvmt = candidates.get(r.nextInt(candidates.size()));
+            chosenMvmt = candidates.get(r.nextInt(candidates.size()));//bug here
             index += side;
 
         }
@@ -351,6 +351,7 @@ public class RoboboPopulation {
         ArrayList<RoboboDNA> offspring = new ArrayList<>();
         RoboboPopulation newGen = new RoboboPopulation();
         Integer nbTries = 0;
+        Long maxTime = 5000L;
 
         Integer safeDistance = Integer.MAX_VALUE;
         for(RoboboDNA parent : this.pop){
@@ -363,7 +364,7 @@ public class RoboboPopulation {
 
         long start = System.currentTimeMillis();
         Integer k = 0;
-        while(offspring.size()<10 && System.currentTimeMillis() - start < 1000L){
+        while(offspring.size()<10 && System.currentTimeMillis() - start < maxTime){
             k++;
             Log.d("NS", "essai : "+k.toString()+" temps : "+String.valueOf(System.currentTimeMillis() - start) + "trouvés : "+String.valueOf(offspring.size()));
             RoboboDNA child = xOver();

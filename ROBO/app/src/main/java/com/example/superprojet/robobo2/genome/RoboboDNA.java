@@ -52,7 +52,7 @@ public class RoboboDNA {
         int currSize = this.genotype.size();
 
         //set arbitrarily, may change
-        int idealSize = 10;
+        int idealSize = 20;
 
         ArrayList<RoboboGene> newGenotype = new ArrayList<>();
         float mutaProba = 1f/currSize;
@@ -63,11 +63,15 @@ public class RoboboDNA {
 
         for(int i = 0; i<currSize; i++){
             r = random.nextFloat();
-            if(r>=lossProba){
-                currGene = this.getGenotype().get(i);
-                currGene.mutate();
-                newGenotype.add(currGene);
+            if(r < mutaProba)
+            {
+                if(r>=lossProba){
+                    currGene = this.getGenotype().get(i);
+                    currGene.mutate();
+                    newGenotype.add(currGene);
+                }
             }
+            else newGenotype.add(this.getGenotype().get(i));
         }
 
         r = random.nextFloat();
@@ -120,7 +124,7 @@ public class RoboboDNA {
         }
     }
 
-    public Bitmap DNAtoImage(){
+    public Bitmap DNAtoImage(int ival){
         RoboboDNASim sim = new RoboboDNASim();
         Bitmap im = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
         im.setHasAlpha(false);
@@ -137,7 +141,8 @@ public class RoboboDNA {
                  */
                 if((int)sim.getPosition()[0] < (im.getWidth()) && (int)sim.getPosition()[0] >= 0){
                     if((int)sim.getPosition()[1] < im.getHeight() && (int)sim.getPosition()[1] >= 0){
-                        im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.YELLOW);
+                        if ((ival%2) > 0 ) im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.YELLOW);
+                        else im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.GREEN);
                     }
                 }
                 //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
@@ -147,7 +152,8 @@ public class RoboboDNA {
                     sim.execAction(action);
                     if((int)sim.getPosition()[0] < (im.getWidth()) && (int)sim.getPosition()[0] >= 0){
                         if((int)sim.getPosition()[1] < im.getHeight() && (int)sim.getPosition()[1] >= 0){
-                            im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.YELLOW);
+                            if ((ival%2) > 0 ) im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.YELLOW);
+                            else im.setPixel( (int)sim.getPosition()[0], (int)sim.getPosition()[1], Color.GREEN);
                         }
                     }
                     //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
@@ -162,7 +168,7 @@ public class RoboboDNA {
             }
         }
         //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.RED);
-        return im;
+        return im;//.copy(Bitmap.Config.ARGB_8888, false);
     }
 
 
