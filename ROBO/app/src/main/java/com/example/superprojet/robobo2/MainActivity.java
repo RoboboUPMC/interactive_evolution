@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.superprojet.robobo2.genome.RoboboDNASim;
 import com.example.superprojet.robobo2.genome.RoboboGene;
 import com.example.superprojet.robobo2.genome.RoboboDNA;
 import com.example.superprojet.robobo2.genome.RoboboPopulation;
@@ -346,7 +347,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             //EditText editText = (EditText) child.findViewById(R.id.theTextField);
             //editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
-            imageView.setImageBitmap(image_list.get(counter));
+            Bitmap image = image_list.get(counter);
+            RoboboDNASim.scaleToFitWidth(image, 300);
+            RoboboDNASim.scaleToFitHeight(image, 160);
+            imageView.setImageBitmap(image);
             pos++;
 
             parent.addView(child);
