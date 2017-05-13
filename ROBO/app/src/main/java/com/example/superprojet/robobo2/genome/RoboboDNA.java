@@ -168,15 +168,15 @@ public class RoboboDNA {
         maxX+=10;
         maxY+=10;
 
-        imWidth = (int) 1.1*Math.max(150, maxX);
-        imHeight = (int) 1.1*Math.max(150, maxY);
+        imWidth = (int) 1.1*Math.max(200, maxX);
+        imHeight = (int) 1.1*Math.max(200, maxY);
         Bitmap im = Bitmap.createBitmap(imWidth, imHeight, Bitmap.Config.ARGB_8888);
         im.setHasAlpha(false);
 
         for(int i = 0; i< pixels.size(); i++){
             int x = pixels.get(i)[0];
             int y = pixels.get(i)[1];
-            Log.d("img" , String.valueOf(x) + " " +  String.valueOf(y) + " " +  String.valueOf(imWidth) + " " +  String.valueOf(imHeight));
+
             if(i<=10){
                 im.setPixel(x,y, Color.RED);
             }

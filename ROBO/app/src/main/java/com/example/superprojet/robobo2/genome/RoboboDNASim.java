@@ -26,7 +26,7 @@ public class RoboboDNASim {
         this.alpha_f = 0.0002;
         this.beta_f = 0.0005;
 
-        this.position = new Vecteur((double) 150, (double) 150);
+        this.position = new Vecteur((double) 100, (double) 100);
         this.direction = new Vecteur((double) 0, (double) -1);
 
     }
