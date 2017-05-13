@@ -567,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         adb.show();
     }
-    public void onClickImage(View view){
+     public void onClickImage(View view){
 
         LinearLayout list = (LinearLayout) findViewById(R.id.behavior_generator_list);
         LinearLayout lin = (LinearLayout) view.getParent();
@@ -578,9 +578,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
 
         ImageView imageView2 = (ImageView)  alertDialogView.findViewById(R.id.ImageView);
-       // view.buildDrawingCache();
-        Toast.makeText(context, ""+pos, Toast.LENGTH_SHORT).show();
-        //imageView2.setImageBitmap(view.getDrawingCache());
+
         imageView2.setImageBitmap(image_list.get(pos));
         imageView2.setScaleType(ImageView.ScaleType.FIT_CENTER);
         adb.setView(alertDialogView);
