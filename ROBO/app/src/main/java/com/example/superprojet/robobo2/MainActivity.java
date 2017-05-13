@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
     //ArrayList<String> myList = new ArrayList<>();
     static Boolean atMainview;
+    private ProgressDialog pDialog;
 
     public RoboboManager roboboManager;
     public RoboboApp app;
@@ -422,7 +423,8 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     }
                 }
                 // insert real purpose here
-                roboPop = roboPop.noveltySearch(NSpop, parent_list);
+                new asyncNS().execute();
+                //roboPop = roboPop.noveltySearch(NSpop, parent_list);
                 /*
                 for (String s : chosen) {
                     //parent.removeView(parent.findViewById(i));
@@ -730,8 +732,38 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         return mot;
     }
-  public RoboboDNA remplirDNA  (String resultat){
+    public RoboboDNA remplirDNA  (String resultat){
         RoboboDNA rDNA=new RoboboDNA(rob, resultat);
         return rDNA;
+    }
+
+    private class asyncNS extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Please wait...");
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            roboPop = roboPop.noveltySearch(NSpop, parent_list);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (pDialog.isShowing())
+                pDialog.dismiss();
+            Log.d("onPostExecute", "done");
+        }
+
     }
 }
