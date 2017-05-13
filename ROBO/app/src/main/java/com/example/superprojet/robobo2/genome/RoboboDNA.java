@@ -171,7 +171,7 @@ public class RoboboDNA {
             }
 
             if(p[1]<minY){
-                maxY = p[1];
+                minY = p[1];
             }
         }
 
