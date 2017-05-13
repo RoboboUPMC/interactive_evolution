@@ -284,7 +284,7 @@ public class RoboboPopulation {
             Random r = new Random();
             i = indexes.get(r.nextInt(indexes.size()));
             //nbOcc.set(i, nbOcc.get(i)==null?1:nbOcc.get(i)+1);
-            nbOcc.set(i, nbOcc.get(i)==0?1:nbOcc.get(i)+1);
+            nbOcc.set(i, max.intValue());
             max = Collections.max(mean);
         }
 
