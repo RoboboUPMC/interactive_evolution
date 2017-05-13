@@ -312,7 +312,7 @@ public class RoboboPopulation {
         Random r = new Random();
         do {
             chosenMvmt = r.nextInt(8);
-        }while(nbOcc.get(chosenMvmt) != 0);
+        }while(nbOcc.get(chosenMvmt) == 0);
         Integer index = 0;
         Integer side = r.nextInt(1);
 
@@ -327,6 +327,8 @@ public class RoboboPopulation {
 
             // update of the number of occurrences table and adjacency table
             child.add(index, chosenMvmt);
+
+            Log.d("xOver", "child" +" "+child.toString());
             nbOcc.set(chosenMvmt, nbOcc.get(chosenMvmt)-1);
 
             // We list all the neighbors that have the maximum adjacency with our chosen point
@@ -353,7 +355,7 @@ public class RoboboPopulation {
 
         }
 
-        Log.d("xOver", "pas bloqué");
+        Log.d("xOver fin", nbOcc.toString());
 
         return new RoboboDNA(p1.rob, child);
 
@@ -378,7 +380,7 @@ public class RoboboPopulation {
 
         long start = System.currentTimeMillis();
         Integer k = 0;
-        while(offspring.size()<1 && System.currentTimeMillis() - start < maxTime){
+        while(offspring.size()<10 && System.currentTimeMillis() - start < maxTime){
             k++;
             Log.d("NS", "essai : "+k.toString()+" temps : "+String.valueOf(System.currentTimeMillis() - start) + "trouvés : "+String.valueOf(offspring.size()));
             RoboboDNA child = xOver();

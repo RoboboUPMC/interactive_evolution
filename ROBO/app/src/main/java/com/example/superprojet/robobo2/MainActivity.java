@@ -66,6 +66,7 @@ import org.java_websocket.client.WebSocketClient;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends AppCompatActivity implements ITestListener {
@@ -428,7 +429,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     }
                 }
                 // insert real purpose here
-                new asyncNS().execute();
+                try {
+                    new asyncNS().execute().get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
                 //roboPop = roboPop.noveltySearch(NSpop, parent_list);
                 /*
                 for (String s : chosen) {
@@ -439,11 +446,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
                 // Temporary wait of 1sec.
                 // must wait until the novelty search is finished or there may be an exception or an incorrect number of children displayed (the number of checked parents)
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 drawImages();
                 displayBGen(button);
                 Log.d("onClickOptions", parent_list.toString());
