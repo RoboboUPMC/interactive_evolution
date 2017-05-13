@@ -368,7 +368,9 @@ public class RoboboPopulation {
             k++;
             Log.d("NS", "essai : "+k.toString()+" temps : "+String.valueOf(System.currentTimeMillis() - start) + "trouvés : "+String.valueOf(offspring.size()));
             RoboboDNA child = xOver();
+            Log.d("Avant mutation", String.valueOf(child.getGenotype().size()));
             child.mutate();
+            Log.d("Avant mutation", String.valueOf(child.getGenotype().size()));
             Log.d("NS", "distance acceptable : "+safeDistance.toString());
             Boolean newEnough = true;
             for(RoboboDNA other : nspop.getPop()){
