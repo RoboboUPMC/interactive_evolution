@@ -694,7 +694,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 if(nomdesFichiers.length!=0) {
 
                     String nom = (String)spin.getSelectedItem();
-                    Toast.makeText(context,nom,Toast.LENGTH_SHORT).show();
+                    
+                    Toast.makeText(context,"chargement de "+nom,Toast.LENGTH_SHORT).show();
+                    
                     try {
                         resultat[0] =charger(nom);
                         roboPop.getPop().add(remplirDNA(resultat[0]));
@@ -754,7 +756,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 content.append((new String(buffer)));
             }
             data = content.toString();
-            Toast.makeText(context,data,Toast.LENGTH_SHORT).show();
+            
 
         }
         catch (FileNotFoundException e){
