@@ -7,7 +7,7 @@
     <string name="behavior_generator_info_hint">This is where the magic happens</string>
     <string name="test_buttons">test</string>
     <string name="goto_bg_button">behavior generator</string>
-    <string name="run_test_button">run test</string>
+    <string name="run_test_button">Lower panel</string>
     <string name="bluetooth_button">connect bluetooth</string>
     <string name="exit_button">Exit</string>
     <string name="resetPopupTitle">Reset population</string>
