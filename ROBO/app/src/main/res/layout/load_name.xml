@@ -9,7 +9,7 @@
         android:id="@+id/loadTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Charger quel Fichier:"
+        android:text="@string/loading_file"
         android:paddingBottom="10dip" />
 
     <Spinner

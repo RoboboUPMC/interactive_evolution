@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">ROBOBO2</string>
-    <string name="goto_end">End</string>
-    <string name="reset">Reset</string>
-    <string name="load">Load</string>
-    <string name="nsbutton">Ns</string>
-    <string name="behavior_generator_info_hint">Information&#8230;</string>
-    <string name="testbuttons">test</string>
+    <string name="save_button">Save</string>
+    <string name="reset_button">Reset</string>
+    <string name="load_button">Load</string>
+    <string name="ns_button">NS</string>
+    <string name="behavior_generator_info_hint">This is where the magic happens</string>
+    <string name="test_buttons">test</string>
     <string name="goto_bg_button">behavior generator</string>
     <string name="run_test_button">run test</string>
     <string name="bluetooth_button">connect bluetooth</string>
+    <string name="exit_button">Exit</string>
     <string name="resetPopupTitle">Reset population</string>
     <string name="resetPopupContent">This will reset the entire population to a new random one. Are you sure this is what you want?</string>
     <string name="presavePopupTitle">Saving Behavior</string>
@@ -16,4 +17,12 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="ok">OK</string>
+    <string name="oops">Oops!</string>
+    <string name="oops_dialog">Something\'s not right&#8230;\nPerhaps you forgot to connect to a Robobo device?</string>
+    <string name="saving_file">Please enter a name for the behavior :</string>
+    <string name="loading_file">Please select the name of the behavior you wish to load :</string>
+    <string name="loading_title">Loading behavior</string>
+    <string name="saving_title">Saving behavior</string>
+    <string name="cancel">Cancel</string>
+
 </resources>

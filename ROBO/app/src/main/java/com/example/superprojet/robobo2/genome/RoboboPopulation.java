@@ -66,7 +66,7 @@ public class RoboboPopulation {
             val = distLevenshtein(individu_1, individu_2);
             if (val > min_val){min_val = val;}
         }
-        return Math.max((min_val+1) / 2, 3);
+        return Math.max((min_val+1) / 2, 1);
     }
 
     public int maxLevenstein(RoboboDNA individu_1)

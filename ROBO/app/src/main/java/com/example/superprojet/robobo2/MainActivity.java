@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
     public ArrayList<Bitmap> image_list;
     private AlertDialog resetPopup;
     private AlertDialog presavePopup;
+    private AlertDialog oopsPopup;
     private int basicPopSize = 10;
     
     /****/
@@ -149,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
             @Override
             public void selectionCancelled() {
-
             }
 
             @Override
@@ -292,22 +293,23 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         });
         presavePopup = builder2.create();
 
+        AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
+        builder3.setMessage(R.string.oops_dialog)
+                .setTitle(R.string.oops);
+        builder3.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        oopsPopup = builder3.create();
 
-
-        /*
-        myList.add("tralala");
-        myList.add("truc");
-        myList.add("machin");
-        myList.add("chouette");
-        myList.add("chose");
-        myList.add("bestiole");
-        */
     }
 
     @Override
     protected void onDestroy(){
+        if (rob!=null) roboboHelper.unbindRoboboService();
         super.onDestroy();
-        roboboHelper.unbindRoboboService();
     }
 
     @Override
@@ -340,7 +342,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         int counter;
         for (counter = 0; counter < roboPop.getPop().size(); counter++) {
-        //for (counter = 0; counter < myList.size(); counter++) {
             View child = getLayoutInflater().inflate(R.layout.behavior_example, null);
 
             child.setId(pos);
@@ -372,10 +373,9 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         switch (button.getId()) {
             case R.id.main_activity_goto_bg :
-                if (!roboPopInit)
+                 if (!roboPopInit)
                 {
                     //roboPopInit
-
                     Log.d("MainActivity.onCreate", "rob = " + (rob==null?"null":"des trucs"));
                     try{
                         roboPop.init(basicPopSize, rob);
@@ -393,15 +393,20 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 drawImages();
                 displayBGen(button);
                 break;
+
             case R.id.main_activity_run_test :
-                /*Thread t = new Thread(app);
-                t.start();*/
-                app.run();
+                if (rob!=null) app.run();
+                else oopsPopup.show();
                 break;
+
             case R.id.main_activity_connect_bluetooth :
                 showRoboboDeviceSelectionDialog();// initialisation du RoboboApp
-
                 break;
+
+            case R.id.main_activity_exit :
+                finish();
+                break;
+
             default:
                 Log.d("onClickMain", "reached end of switch");
         }
@@ -459,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 }
                 break;
             case R.id.behavior_generator_end :
-                Log.d("onClickOptions", "End button");
+                Log.d("onClickOptions", "Save button");
                 parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
                 RoboboDNA toSave = null;
                 for (counter = 0; counter < parent.getChildCount(); counter++) {
@@ -499,37 +504,17 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         View view = (View) button.getParent();
         int id = view.getId();
 
-        try {
-            roboPop.getPop().get(id).exec();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        /*
-        if(id == 1) {
-            parent.removeView(view);
+        if (rob!=null)
+        {
             try {
-                new RoboboApp(roboboManager, MainActivity.this, new Callable<Integer>() {
-                    public Integer call() {
-                        int i = 0;
-                        try {
-                            return carre();
-                        } catch (InternalErrorException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        return i;
-                    }});
+                roboPop.getPop().get(id).exec();
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         }
-        */
+        else oopsPopup.show();
 
-        Log.d("onCLick", "Testing behavior "+id);//myList.get(id)
+        Log.d("onCLick", "Testing behavior "+id);
     }
 
     public int carre() throws InternalErrorException, InterruptedException {
@@ -560,7 +545,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         imageView2.setImageBitmap(image_list.get(pos));
         imageView2.setScaleType(ImageView.ScaleType.FIT_CENTER);
         adb.setView(alertDialogView);
-        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
             } });
 
@@ -574,13 +559,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         AlertDialog.Builder adb = new AlertDialog.Builder(this);
 
         adb.setView(alertDialogView);
-        adb.setTitle("Sauvegarder");
+        adb.setTitle(R.string.saving_title);
 
 
-        adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(R.string.save_button, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 EditText valsaisie = (EditText)alertDialogView.findViewById(R.id.EditText);
-                nom[0] =valsaisie.getText().toString();
+                nom[0] = valsaisie.getText().toString();
                 try {
                     serialization(nom[0],serialisationDNA(rDNA));
                 } catch (IOException e) {
@@ -590,7 +575,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
 
 
-        adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //finish();
             } });
@@ -640,7 +625,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         try {
             outputStream = openFileOutput(nom+".txt", Context.MODE_PRIVATE);
             outputStream.write(data.getBytes());
-            Toast.makeText(context, "Sauvegarder", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.saving_title, Toast.LENGTH_SHORT).show();
             outputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -658,7 +643,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         final String [] nomdesFichiers=genererListeFichier();
         final Spinner spin = (Spinner) alertDialogView.findViewById(R.id.loadspinner);
         adb.setView(alertDialogView);
-        adb.setTitle("Charger");
+        adb.setTitle(R.string.loading_title);
         final String[] resultat = new String[1];
 
         if(nomdesFichiers.length!=0){
@@ -667,13 +652,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             spin.setAdapter(dataAdapter);
         }
 
-        adb.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(R.string.load_button, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 if(nomdesFichiers.length!=0) {
 
                     String nom = (String)spin.getSelectedItem();
                     
-                    Toast.makeText(context,"chargement de "+nom,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Loading "+nom,Toast.LENGTH_SHORT).show();
                     
                     try {
                         resultat[0] =charger(nom);
@@ -716,7 +701,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 }
             } });
 
-        adb.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //finish();
             } });

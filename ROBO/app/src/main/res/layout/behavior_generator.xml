@@ -12,14 +12,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/behavior_generator_reset"
-            android:text="@string/reset"
+            android:text="@string/reset_button"
             android:layout_weight="1"
             android:onClick="onClickOptions"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/behavior_generator_nsbutton"
-            android:text="@string/nsbutton"
+            android:text="@string/ns_button"
             android:layout_weight="1"
             android:onClick="onClickOptions"/>
 
@@ -27,29 +27,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/behavior_generator_load"
-            android:text="@string/load"
+            android:text="@string/load_button"
             android:layout_weight="1"
             android:onClick="onClickOptions"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/behavior_generator_end"
-            android:text="@string/goto_end"
+            android:text="@string/save_button"
             android:layout_weight="1"
             android:onClick="onClickOptions"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/behavior_generator_info_height">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/behavior_generator_info_hint"
-            android:enabled="false"
-            android:focusable="false"
-            android:id="@+id/behavior_generator_info_text"/>
     </LinearLayout>
 
     <ScrollView

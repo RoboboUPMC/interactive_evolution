@@ -33,6 +33,12 @@
             android:id="@+id/main_activity_connect_bluetooth"
             android:text="@string/bluetooth_button"
             android:onClick="onClickMain"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:id="@+id/main_activity_exit"
+            android:text="@string/exit_button"
+            android:onClick="onClickMain"/>
 
     </LinearLayout>
 </RelativeLayout>
