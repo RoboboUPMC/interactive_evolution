@@ -544,29 +544,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         }
         return 0;
     }
-       public void onClickImage(View view){
-        ImageView imageView1 = (ImageView) findViewById(view.getId());
-        LinearLayout parent= (LinearLayout) imageView1.getParent();
-        LinearLayout parent2= (LinearLayout) parent.getParent();
-        //int pos= parent2.get;
-
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View alertDialogView = factory.inflate(R.layout.show_image, null);
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-
-        ImageView imageView2 = (ImageView)  alertDialogView.findViewById(R.id.ImageView);
-        view.buildDrawingCache();
-
-        imageView2.setImageBitmap(view.getDrawingCache());
-        imageView2.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        adb.setView(alertDialogView);
-        Toast.makeText(context,""+ parent2.getId(), Toast.LENGTH_SHORT).show();
-        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-            } });
-
-        adb.show();
-    }
+       
      public void onClickImage(View view){
 
         LinearLayout list = (LinearLayout) findViewById(R.id.behavior_generator_list);
