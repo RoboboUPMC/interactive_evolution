@@ -1,21 +1,12 @@
 package com.example.superprojet.robobo2.genome;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
-import android.util.Log;
 
 import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
-import com.mytechia.robobo.framework.exception.ModuleNotFoundException;
-import com.mytechia.robobo.rob.BluetoothRobInterfaceModule;
 import com.mytechia.robobo.rob.IRob;
-import com.mytechia.robobo.rob.MoveMTMode;
 
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -31,16 +22,28 @@ public class RoboboDNA {
     private ArrayList<RoboboGene> genotype = new ArrayList<>();
     public int selectionCounter = 0;
 
-
+    /**
+     * Creates a new random behavior
+     * It takes an IRob (used to control the RBB) as parameter
+     * It is used when initializing (or resetting) the population
+     * @param iRob
+     */
     public RoboboDNA(IRob iRob){
         rob = iRob;
-        Integer seqSize = 10;
+        Integer seqSize = 20;
         Random r = new Random();
         for(int i = 0 ; i < seqSize ; i++){
             genotype.add(new RoboboGene(rob, RoboboGene.MvmtType.values()[r.nextInt(RoboboGene.MvmtType.values().length)]));
         }
 
     }
+
+    /**
+     * Creates a new behavior using a String
+     * It is used when loading a previously saved behavior
+     * @param r
+     * @param s
+     */
     public RoboboDNA(IRob r ,String s){
         rob = r;
         String [] mot  = s.split(" ");
@@ -50,6 +53,9 @@ public class RoboboDNA {
         }
     }
 
+    /**
+     *
+     */
     public void mutate(){
         int currSize = this.genotype.size();
 
@@ -122,11 +128,23 @@ public class RoboboDNA {
         this.genotype = genotype;
     }
 
+
+    /**
+     * calls every RoboboGene.run() one by one
+     * The operation mode is set to unsafe (1) beforehand because the falling detection
+     * is flawed and the robot won't move eon certain surfaces
+     * All LEDs are turned off before and after the execution
+     */
     public void exec(){
 
+        com.mytechia.robobo.util.Color off = new com.mytechia.robobo.util.Color(0,0,0);
         try {
             rob.setOperationMode((byte)1);
-          //  rob.moveMT(MoveMTMode.FORWARD_FORWARD, 80, 1000, 80, 1000);
+            for(int i = 1; i <= 9; i++){
+
+                rob.setLEDColor(i, off);
+
+            }
         } catch (InternalErrorException e) {
             e.printStackTrace();
         }
@@ -138,7 +156,6 @@ public class RoboboDNA {
                 e.printStackTrace();
             }
         }
-        com.mytechia.robobo.util.Color off = new com.mytechia.robobo.util.Color(0,0,0);
         for(int i = 1; i <= 9; i++){
             try {
                 rob.setLEDColor(i, off);
@@ -148,8 +165,16 @@ public class RoboboDNA {
         }
     }
 
-
-    public Bitmap DNAtoImage2(int ival){
+    /**
+     * Generates the bitmap preview of the behavior
+     * the first pixels are in red and the last are in red
+     * the other pixels are alternatively set to yellow and green
+     * depending on the parameter.
+     * That way every other behavior has the same color to facilitate readability
+     * @param ival
+     * @return
+     */
+    public Bitmap DNAtoImage(int ival){
         RoboboDNASim sim = new RoboboDNASim();
         ArrayList<int[]> pixels = new ArrayList<int[]>();
         int maxX = (int) sim.getPosition()[0];
@@ -159,28 +184,23 @@ public class RoboboDNA {
         int imHeight;
         int imWidth;
 
-        //im.setPixel(((int) sim.getPosition()[0]),( (int) sim.getPosition()[1]), Color.BLUE);
         pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
         for(RoboboGene gene: this.getGenotype()){
             RoboboGene.MvmtType mv = gene.mvmtType;
             double[] action = sim.mvmtToAction(mv);
             if(action[0] == 0){
                 sim.execAction(action);
-                //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
                 pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
             }
             else{
                 for(int i = 0; i < 25; i++){
                     sim.execAction(action);
                     pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
-                    //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.YELLOW);
                 }
             }
-            //System.out.println("Apres l'action, le robobo est en " + sim.position.toString() + "avec une vitesse " + sim.vitesse);
         }
 
         pixels.add(new int[]{(int) sim.getPosition()[0], (int) sim.getPosition()[1]});
-        //im.setPixel(java.lang.Math.min(im.getWidth()-1, (int)sim.getPosition()[0]), java.lang.Math.min(im.getHeight()-1, (int)sim.getPosition()[1]), Color.RED);
 
 
         for(int[] p: pixels){

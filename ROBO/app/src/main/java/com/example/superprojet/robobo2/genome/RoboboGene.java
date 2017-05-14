@@ -2,26 +2,9 @@ package com.example.superprojet.robobo2.genome;
 
 import android.util.Log;
 
-import com.example.superprojet.robobo2.RoboboApp;
-import com.mytechia.commons.framework.exception.InternalErrorException;
-import com.mytechia.robobo.framework.RoboboManager;
-import com.mytechia.robobo.framework.exception.ModuleNotFoundException;
-import com.mytechia.robobo.framework.hri.emotion.DefaultEmotionModule;
-import com.mytechia.robobo.rob.BatteryStatus;
-import com.mytechia.robobo.rob.BluetoothRobInterfaceModule;
-import com.mytechia.robobo.rob.FallStatus;
-import com.mytechia.robobo.rob.GapStatus;
-import com.mytechia.robobo.rob.IRSensorStatus;
 import com.mytechia.robobo.rob.IRob;
-import com.mytechia.robobo.rob.IRobStatusListener;
-import com.mytechia.robobo.rob.MotorStatus;
-import com.mytechia.robobo.rob.MoveMTMode;
-import com.mytechia.robobo.rob.WallConnectionStatus;
-import com.mytechia.robobo.rob.movement.DefaultRobMovementModule;
-import com.mytechia.robobo.rob.movement.IRobMovementModule;
 import com.mytechia.robobo.util.Color;
 
-import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -41,7 +24,6 @@ public class RoboboGene implements Runnable{
     }
 
     IRob rob;
-    RoboboManager roboboManager;
 
     MvmtType mvmtType;
 
@@ -55,13 +37,15 @@ public class RoboboGene implements Runnable{
     long duration;
 
 
-
+    /**
+     * Creates a RoboboGene using an IRob (used to control the RBB)
+     * and a MvmtType
+     * This is the most widely used constructor of RoboboGene throughout the code
+     * @param r
+     * @param d
+     */
     public RoboboGene(IRob r, MvmtType d){
         rob = r;
-
-
-
-
         mvmtType = d;
 
         switch (d){
@@ -94,7 +78,17 @@ public class RoboboGene implements Runnable{
 
     }
 
-   public RoboboGene(IRob r, String mvt,int lV, int rV,long dur){
+    /**
+     * Creates a new gene using an IRob (used to control the RBB)
+     * and a String (the movement type)
+     * Used to load a previously saved behavior
+     * @param r
+     * @param mvt
+     * @param lV
+     * @param rV
+     * @param dur
+     */
+    public RoboboGene(IRob r, String mvt,int lV, int rV,long dur){
         rob = r;
         if(mvt.equals("BACKWARDS")){
             this.setMvmtType(mvmtType.BACKWARDS);
@@ -124,7 +118,12 @@ public class RoboboGene implements Runnable{
         this.rightVelocity=rV;
         this.duration=dur;
     }
-    
+
+    /**
+     * changes the mvmt variableto one of the type set in parameter
+     * used in mutate()
+     * @param mvmtType
+     */
     public void setMvmtType(MvmtType mvmtType) {
         this.mvmtType = mvmtType;
         switch (mvmtType){
@@ -161,9 +160,10 @@ public class RoboboGene implements Runnable{
     }
 
 
-
+    /**
+     * Changes the movement type of a gene to a new random one that may or may not be the same
+     */
     public void mutate(){
-        RoboboGene mutatedGene = new RoboboGene(rob);
         Random random = new Random();
         MvmtType newMvmt;
         int r = 0;
@@ -171,12 +171,9 @@ public class RoboboGene implements Runnable{
         r = random.nextInt(MvmtType.values().length);
         newMvmt = MvmtType.values()[r];
         this.setMvmtType(newMvmt);
-;
+        ;
     }
 
-    public RoboboManager getRoboboManager() {
-        return roboboManager;
-    }
 
     public MvmtType getMvmtType() {
         return mvmtType;
@@ -191,22 +188,13 @@ public class RoboboGene implements Runnable{
         return this.mvmtType == gene.mvmtType;
     }
 
+    /**
+     * executes the movement associated with the current gene
+     * also lights a random LED to a random color
+     */
     @Override
     public void run() {
         Random random = new Random();
-//        rob.addRobStatusListener(listener);
-//
-//        try {
-//            rob.setRobStatusPeriod(10); // les statuts du robot sont vérifiés toutes les 50ms
-//        } catch (InternalErrorException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            rob.setOperationMode((byte)1);
-//        } catch (InternalErrorException e) {
-//            e.printStackTrace();
-//        }
-
 
         try {
             rob.moveMT(mvmt.getDirection(), mvmt.getLeftVelocity(), mvmt.getRightVelocity(), mvmt.getDuration());
@@ -216,18 +204,13 @@ public class RoboboGene implements Runnable{
             int b = random.nextInt(256);
             Color c = new Color(r,g,b);
             rob.setLEDColor(i,c);
-//            while(rightVelocity!=0 || leftVelocity!=0){
-//                Thread.sleep(10L);// on attend que le robot ait terminé son action
-//            }
-//            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 0, 0, 1L);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        rob.removeRobStatusListener(listener);
         Log.d("RoboboGene.run()", "over");
 
     }
-    
+
     public int getLeftVelocity(){return this.leftVelocity;}
     public int getRightVelocity(){return this.rightVelocity;}
     public long getduration(){return mvmt.getDuration();}
