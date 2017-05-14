@@ -552,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         adb.show();
     }
     /*****Sauvegarde/Chargement************************************************************/
-     public void boiteSauvegarde(final RoboboDNA rDNA)  {
+        public void boiteSauvegarde(final RoboboDNA rDNA)  {
         final String[] nom = new String[1];
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
@@ -566,10 +566,33 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             public void onClick(DialogInterface dialog, int which) {
                 EditText valsaisie = (EditText)alertDialogView.findViewById(R.id.EditText);
                 nom[0] = valsaisie.getText().toString();
-                try {
-                    serialization(nom[0],serialisationDNA(rDNA));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                 try {
+                    if(nomDejaUtilise(nom[0])){
+                        try {
+                            serialization(nom[0], serialisationDNA(rDNA));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        if(nom[0].equals("nomFichier") || nom[0].contains(" ") ){
+                            Toast.makeText(context,"name is not correct", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(context, nom[0] + " is already use", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e) {
+                     try {
+                         if(nom[0].equals("nomFichier") || nom[0].contains(" ") ){
+                             Toast.makeText(context,"name is not correct", Toast.LENGTH_SHORT).show();
+                         }
+                         else {
+                             serialization(nom[0], serialisationDNA(rDNA));
+                         }
+                     } catch (IOException e1) {
+                         e1.printStackTrace();
+                     }
                 }
             } });
 
@@ -580,6 +603,22 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 //finish();
             } });
         adb.show();
+    }
+
+    boolean nomDejaUtilise(String nom) throws IOException {
+        String fichier[] = genererListeFichier();
+        for (int i=0;i<fichier.length;i++) {
+            if (fichier[i].equals(nom)) {
+                return false;
+            }
+        }
+        if (nom.equals("nomFichier")){
+            return false;
+        }
+        if(nom.contains(" ")){
+            return false;
+        }
+        return true;
     }
     public String serialisationDNA(RoboboDNA rDNA) {
         String data="";
