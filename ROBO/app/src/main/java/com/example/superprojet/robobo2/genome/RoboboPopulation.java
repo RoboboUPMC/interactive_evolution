@@ -2,7 +2,6 @@ package com.example.superprojet.robobo2.genome;
 
 import android.util.Log;
 
-import com.mytechia.robobo.framework.RoboboManager;
 import com.mytechia.robobo.rob.IRob;
 
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
 
 /**
  * Created by Quentin on 2017/04/05.
@@ -21,7 +19,12 @@ public class RoboboPopulation {
 
     ArrayList<RoboboDNA> pop = new ArrayList<>();
 
-
+    /**
+     * Initializes the population to a new random one
+     * Used to initialize or reset the population
+     * @param popSize
+     * @param rob
+     */
     public void init(int popSize, IRob rob)
     {
         pop.clear();
@@ -36,6 +39,11 @@ public class RoboboPopulation {
         this.pop = new ArrayList<>(pop);
     }
 
+    /**
+     * Gets rid of all the RoboboDNA that aren't present in the parent_list
+     * Used at the beggining of noveltySearch
+     * @param parent_list
+     */
     public void purge(ArrayList<Integer> parent_list)
     {
         int i;
@@ -57,6 +65,12 @@ public class RoboboPopulation {
         return cutoffVal;
     }
 
+    /**
+     * Returns the maximum Levenshtein distance between a behavior and the others in its population.
+     *
+     * @param individu_1
+     * @return
+     */
     public int minLevenstein(RoboboDNA individu_1)//actually maxLevenstein
     {
         int min_val = 0;
@@ -69,18 +83,12 @@ public class RoboboPopulation {
         return Math.max((min_val+1) / 2, 1);
     }
 
-    public int maxLevenstein(RoboboDNA individu_1)
-    {
-        int min_val = Integer.MAX_VALUE;
-        int val;
-        for (RoboboDNA individu_2 : this.pop)
-        {
-            val = distLevenshtein(individu_1, individu_2);
-            if (val < min_val){min_val = val;}
-        }
-        return min_val;
-    }
-
+    /**
+     * returns the Levenshtein distance between two behaviors
+     * @param individu_1
+     * @param individu_2
+     * @return
+     */
     public int distLevenshtein(RoboboDNA individu_1, RoboboDNA individu_2) {
 
         int long1 = individu_1.getGenotype().size();
@@ -114,15 +122,12 @@ public class RoboboPopulation {
 
     }
 
-    private class Edge {
-        RoboboGene g;
 
-        public Edge(RoboboGene g, boolean b){
-            this.g = g;
-        }
-    }
-
-
+    /**
+     * Returns a RoboboDNA chosen at random among the population
+     * The chosen one will have a lesser chance to be picked in the future
+     * @return
+     */
     public RoboboDNA choisirParent(){
         RoboboDNA parent = null;
         Random random = new Random();
@@ -157,6 +162,11 @@ public class RoboboPopulation {
         return parent;
     }
 
+
+    /**
+     * Returns the combination of two behavior using a modified version of the Edge-3 crossover
+     * @return
+     */
     public RoboboDNA xOver(){
 
         RoboboDNA p1 = choisirParent();
@@ -271,21 +281,6 @@ public class RoboboPopulation {
         }
         Float max = Collections.max(mean);
 
-//        while(max > 0){
-//            ArrayList<Integer> indexes = new ArrayList<>();
-//            int i;
-//            for(i = 0 ; i < mean.size() ; i++){
-//                if(mean.get(i) >= max){
-//                    indexes.add(i);
-//                    mean.set(i, max-1);
-//                }
-//            }
-//            Random r = new Random();
-//            i = indexes.get(r.nextInt(indexes.size()));
-//            nbOcc.set(i, nbOcc.get(i)==null?1:nbOcc.get(i)+1);
-//            nbOcc.set(i, max.intValue());
-//            max = Collections.max(mean);
-//        }
         for(int i = 0 ; i < 8 ; i++){
             nbOcc.set(i, mean.get(i).intValue());
         }
@@ -388,7 +383,14 @@ public class RoboboPopulation {
 
     }
 
-
+    /**
+     * Realizes the novelty search to create a new population using the ones picked by the user
+     * It will run for maximum 5 seconds or until 10 "new enough" children are created
+     * if no children are created, the population is set to the chosen parents.
+     * @param nspop
+     * @param parentList
+     * @return
+     */
     public RoboboPopulation noveltySearch(RoboboPopulation nspop, ArrayList<Integer> parentList){
         this.purge(parentList);
         ArrayList<RoboboDNA> offspring = new ArrayList<>();
@@ -403,7 +405,6 @@ public class RoboboPopulation {
                 safeDistance = k;
             }
         }
-        // safeDistance = 0;
 
         long start = System.currentTimeMillis();
         Integer k = 0;

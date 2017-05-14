@@ -96,7 +96,7 @@ public class RoboboDNA {
             }
             else newGenotype.add(this.getGenotype().get(i));
         }
-        
+
         this.setGenotype(newGenotype);
     }
 
