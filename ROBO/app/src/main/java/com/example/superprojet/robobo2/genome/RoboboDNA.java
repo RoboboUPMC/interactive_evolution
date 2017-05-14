@@ -54,7 +54,8 @@ public class RoboboDNA {
     }
 
     /**
-     *
+     * May mutate the genotype
+     * Each mutation has a chance of losing or gaining a gene
      */
     public void mutate(){
         int currSize = this.genotype.size();
@@ -95,14 +96,7 @@ public class RoboboDNA {
             }
             else newGenotype.add(this.getGenotype().get(i));
         }
-/*
-        r = random.nextFloat();
-        if(r >= lossProba){
-            RoboboGene newGene = new RoboboGene(this.rob, RoboboGene.MvmtType.FORWARD);
-            newGene.mutate();
-            newGenotype.add(newGene);
-        }
-*/
+        
         this.setGenotype(newGenotype);
     }
 
