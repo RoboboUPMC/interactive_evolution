@@ -59,6 +59,7 @@ public class RoboboDNA {
         ArrayList<RoboboGene> newGenotype = new ArrayList<>();
         float mutaProba = 1f/currSize;
         float lossProba = Math.min(1f, currSize/(2*idealSize));
+        float lossOrGainProba = .2f;
         float r = 0;
         Random random = new Random();
         RoboboGene currGene = null;
@@ -67,22 +68,35 @@ public class RoboboDNA {
             r = random.nextFloat();
             if(r < mutaProba)
             {
-                if(r>=lossProba){
+                r = random.nextFloat();
+                if(r>=lossOrGainProba)
+                {
                     currGene = this.getGenotype().get(i);
                     currGene.mutate();
                     newGenotype.add(currGene);
                 }
+                else
+                {
+                    r = random.nextFloat();
+                    if (r>=lossProba)
+                    {
+                        newGenotype.add(this.getGenotype().get(i));
+                        RoboboGene newGene = new RoboboGene(this.rob, RoboboGene.MvmtType.FORWARD);
+                        newGene.mutate();
+                        newGenotype.add(newGene);
+                    }
+                }
             }
             else newGenotype.add(this.getGenotype().get(i));
         }
-
+/*
         r = random.nextFloat();
         if(r >= lossProba){
             RoboboGene newGene = new RoboboGene(this.rob, RoboboGene.MvmtType.FORWARD);
             newGene.mutate();
             newGenotype.add(newGene);
         }
-
+*/
         this.setGenotype(newGenotype);
     }
 
