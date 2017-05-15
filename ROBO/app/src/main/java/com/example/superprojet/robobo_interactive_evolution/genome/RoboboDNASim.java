@@ -1,10 +1,6 @@
-package com.example.superprojet.robobo2.genome;
+package com.example.superprojet.robobo_interactive_evolution.genome;
 
 import android.graphics.Bitmap;
-
-import static com.example.superprojet.robobo2.genome.RoboboGene.MvmtType.FORWARD;
-import static com.example.superprojet.robobo2.genome.RoboboGene.MvmtType.FORWARD_LEFT;
-import static com.example.superprojet.robobo2.genome.RoboboGene.MvmtType.FORWARD_RIGHT;
 
 /**
  * Created by meron on 03/05/2017.

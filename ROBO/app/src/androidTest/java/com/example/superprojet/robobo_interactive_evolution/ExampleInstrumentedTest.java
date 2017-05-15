@@ -1,4 +1,4 @@
-package com.example.superprojet.robobo2;
+package com.example.superprojet.robobo_interactive_evolution;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.superprojet.robobo2", appContext.getPackageName());
+        assertEquals("com.example.superprojet.robobo_interactive_evolution", appContext.getPackageName());
     }
 }

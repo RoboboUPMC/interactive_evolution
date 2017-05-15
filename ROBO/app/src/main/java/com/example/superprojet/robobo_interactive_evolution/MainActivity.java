@@ -1,4 +1,4 @@
-package com.example.superprojet.robobo2;
+package com.example.superprojet.robobo_interactive_evolution;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -23,8 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.superprojet.robobo2.genome.RoboboDNA;
-import com.example.superprojet.robobo2.genome.RoboboPopulation;
+import com.example.superprojet.robobo_interactive_evolution.genome.RoboboDNA;
+import com.example.superprojet.robobo_interactive_evolution.genome.RoboboPopulation;
 import com.mytechia.robobo.framework.RoboboManager;
 import com.mytechia.robobo.framework.exception.ModuleNotFoundException;
 import com.mytechia.robobo.framework.hri.speech.production.ISpeechProductionModule;

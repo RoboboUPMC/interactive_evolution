@@ -1,4 +1,4 @@
-package com.example.superprojet.robobo2;
+package com.example.superprojet.robobo_interactive_evolution;
 
 import org.junit.Test;
 

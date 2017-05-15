@@ -1,4 +1,4 @@
-package com.example.superprojet.robobo2.genome;
+package com.example.superprojet.robobo_interactive_evolution.genome;
 
 import android.util.Log;
 
