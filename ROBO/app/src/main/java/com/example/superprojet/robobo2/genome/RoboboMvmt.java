@@ -1,9 +1,6 @@
 package com.example.superprojet.robobo2.genome;
 
-import com.mytechia.robobo.framework.RoboboManager;
 import com.mytechia.robobo.rob.MoveMTMode;
-
-import java.util.Random;
 
 /**
  * Created by Quentin on 2017/04/04.
@@ -18,7 +15,6 @@ abstract class RoboboMvmt {
 
     MoveMTMode direction;
 
-    RoboboGene.MvmtType mvmtType;
 
     RoboboMvmt(int left, int right, long duration){
         this.leftVelocity = left;
