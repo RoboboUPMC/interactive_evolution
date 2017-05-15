@@ -72,7 +72,6 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements ITestListener {
 
-    //ArrayList<String> myList = new ArrayList<>();
     static Boolean atMainview;
     private ProgressDialog pDialog;
 
@@ -121,11 +120,11 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         s.putContents("Taps",i.toString());
         i = i+1;
         Log.d(TAG,s.toString());
-//        remoteModule.postStatus(s);//had to comment this
+        //remoteModule.postStatus(s);//had to comment this
 
         return true;
 
-    }//lala
+    }
 
     private void showRoboboDeviceSelectionDialog() {
 
@@ -236,8 +235,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             @Override
             public void run() {
 
-//                tv.setText(things);
-
+                //tv.setText(things);
 
             }
         });
@@ -256,9 +254,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         roboPopInit = false;
         parent_list = new ArrayList<>();
         image_list = new ArrayList<>();
-        NSpop = new RoboboPopulation();// maybe not needed here
+        NSpop = new RoboboPopulation();
 
         // generating popups
+
         // RESET
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.resetPopupContent)
@@ -282,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         });
         resetPopup = builder.create();
 
+        // SAVING
         AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
         builder2.setMessage(R.string.preSavePopupContent)
                 .setTitle(R.string.presavePopupTitle);
@@ -293,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         });
         presavePopup = builder2.create();
 
+        // OOPS
         AlertDialog.Builder builder3 = new AlertDialog.Builder(this);
         builder3.setMessage(R.string.oops_dialog)
                 .setTitle(R.string.oops);
@@ -319,11 +320,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             atMainview = true;
         } else {
             moveTaskToBack(true);
-            //finish();
         }
         Log.d("Info", "Back button pressed");
     }
 
+    /**
+     * Refreshes the Robobo Generator screen to display the correct (current) information
+     * @param view
+     */
     public void displayBGen(View view){
         int pos = 0;
 
@@ -332,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
 
-        // check that parent has no children (remove all children otherwise)
+        // remove all children from the parent
         parent.removeAllViews();
 
         ViewGroup.LayoutParams params = parent.getLayoutParams();
@@ -346,8 +350,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
             child.setId(pos);
             child.setLayoutParams(params);
-            //EditText editText = (EditText) child.findViewById(R.id.theTextField);
-            //editText.setText("Behavior " + (counter+1));
             ImageView imageView = (ImageView) child.findViewById(R.id.theImage);
             Bitmap image = image_list.get(counter);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -358,6 +360,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         }
     }
 
+    /**
+     * Draws the images resulting from the simulation of the current behaviors
+     * and adds them to a list
+     */
     public void drawImages()
     {
         int i;
@@ -365,10 +371,17 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         image_list.clear();
         for (i=0; i<pop.size(); i++)
         {
-            image_list.add(pop.get(i).DNAtoImage2(i));
+            image_list.add(pop.get(i).DNAtoImage(i));
         }
     }
 
+    /**
+     * Called when one of the main interface buttons is tapped
+     * Take a view as parameter used to check which button was tapped
+     * Either displays the Behavior Generator screen, lowers the panel of the connected ROBOBO,
+     * connects via bluetooth to a ROBOBO device, or exits the app
+     * @param button
+     */
     public void onClickMain(View button) {
 
         switch (button.getId()) {
@@ -394,7 +407,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 displayBGen(button);
                 break;
 
-            case R.id.main_activity_run_test :
+            case R.id.main_activity_run_test :// now lowers the top panel to put away the device
                 if (rob!=null) app.run();
                 else oopsPopup.show();
                 break;
@@ -412,10 +425,16 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         }
     }
 
+    /**
+     * Called when a user taps one of the button at the top of Behavior Generator
+     * Takes a view as parameter used to check which button was tapped
+     * Either resets the behavior list, executes the NS assisted genetic algorithm,
+     * starts a behavior loading dialog, or starts a behavior saving dialog
+     * @param button
+     */
     public void onClickOptions(View button) {
         int counter;
         LinearLayout parent;
-        //ArrayList<String> chosen = new ArrayList<>();
         switch (button.getId()) {
             case R.id.behavior_generator_reset :
                 Log.d("onClickOptions", "Reset button");
@@ -428,11 +447,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 for (counter = 0; counter < parent.getChildCount(); counter++) {
                     CheckBox checkBox = (CheckBox) parent.findViewById(counter).findViewById(R.id.mycheckbox);
                     if (checkBox.isChecked()) {
-                        //chosen.add(myList.get(counter));
                         parent_list.add(counter);
                     }
                 }
-                // insert real purpose here
+
                 try {
                     new asyncNS().execute().get();
                 } catch (InterruptedException e) {
@@ -440,16 +458,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                //roboPop = roboPop.noveltySearch(NSpop, parent_list);
-                /*
-                for (String s : chosen) {
-                    //parent.removeView(parent.findViewById(i));
-                    myList.remove(s);
-                }
-                */
-
-                // Temporary wait of 1sec.
-                // must wait until the novelty search is finished or there may be an exception or an incorrect number of children displayed (the number of checked parents)
 
                 drawImages();
                 displayBGen(button);
@@ -463,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     Log.e("onClickOptions", "Error loading file.");
                 }
                 break;
-            case R.id.behavior_generator_end :
+            case R.id.behavior_generator_end ://now used as a save button
                 Log.d("onClickOptions", "Save button");
                 parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
                 RoboboDNA toSave = null;
@@ -489,17 +497,18 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     Log.d("onClickOptions", "saving...");
                     boiteSauvegarde(toSave);
                 }
-                // saves the selected behavior to a file
-                // displays a popup, clears all behaviors, sets roboPopInit = false
                 break;
             default :
                 Log.d("onClickOptions", "went to default");
         }
     }
 
+    /**
+     * Makes a ROBOBO execute a specific behavior if connected to it
+     * Takes a View as parameter (the button tapped which called this function)
+     * @param button
+     */
     public void onClickList(View button)  {
-
-        //LinearLayout parent = (LinearLayout)findViewById(R.id.behavior_generator_list);
 
         View view = (View) button.getParent();
         int id = view.getId();
@@ -517,19 +526,12 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         Log.d("onCLick", "Testing behavior "+id);
     }
 
-    public int carre() throws InternalErrorException, InterruptedException {
-
-        IRob rob = roboboManager.getModuleInstance(BluetoothRobInterfaceModule.class).getRobInterface();
-
-        for(int i=0;i<4;i++) {
-            rob.moveMT(MoveMTMode.FORWARD_FORWARD, 80, 80, 200L);
-            Thread.sleep(200L);
-            rob.moveMT(MoveMTMode.FORWARD_REVERSE, 80, 240, 80, 240);
-            Thread.sleep(200L);
-        }
-        return 0;
-    }
-       
+    /**
+     * Displays an image in an AlertDialog with a larger version of the image tapped
+     * It takes a view as a parameter (the one which caused the function to be called)
+     * It is called when a user taps on an image in the Behavior Generator list
+     * @param view
+     */
      public void onClickImage(View view){
 
         LinearLayout list = (LinearLayout) findViewById(R.id.behavior_generator_list);
@@ -551,8 +553,15 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
         adb.show();
     }
-    /*****Sauvegarde/Chargement************************************************************/
-        public void boiteSauvegarde(final RoboboDNA rDNA)  {
+
+    /*****Saving/Loading************************************************************/
+    /**
+     * Starts a Dialog to help the user save a selected behavior and saves it
+     * It takes a RoboboDNA as a parameter (the one to be saved)
+     * It is called when a user taps on the SAVE button in Behavior Generator
+     * @param rDNA
+     */
+    public void boiteSauvegarde(final RoboboDNA rDNA)  {
         final String[] nom = new String[1];
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.serialization_name, null);
@@ -576,16 +585,16 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
                     }
                     else{
                         if(nom[0].equals("nomFichier") || nom[0].contains(" ") ){
-                            Toast.makeText(context,"name is not correct", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,"name is incorrect", Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(context, nom[0] + " is already use", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, nom[0] + " is already used", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (Exception e) {
                      try {
                          if(nom[0].equals("nomFichier") || nom[0].contains(" ") ){
-                             Toast.makeText(context,"name is not correct", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(context,"name is incorrect", Toast.LENGTH_SHORT).show();
                          }
                          else {
                              serialization(nom[0], serialisationDNA(rDNA));
@@ -605,6 +614,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         adb.show();
     }
 
+    /**
+     * Checks if a behavior with this name already exists in save files
+     * It takes a String as a paramter (used to check against the other behaviors saved)
+     * @param nom
+     * @return
+     * @throws IOException
+     */
     boolean nomDejaUtilise(String nom) throws IOException {
         String fichier[] = genererListeFichier();
         for (int i=0;i<fichier.length;i++) {
@@ -620,6 +636,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         }
         return true;
     }
+
+    /**
+     * Converts a RoboboDNA to a serializable data format
+     * It takes a RoboboDNA as a parameter (the one to be converted)
+     * @param rDNA
+     * @return
+     */
     public String serialisationDNA(RoboboDNA rDNA) {
         String data="";
         for(int i=0;i<rDNA.getGenotype().size();i++){
@@ -658,6 +681,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         return data;
 
     }
+
+    /**
+     * Saves a behavior to file as a String
+     * It takes two Strings as parameters : the name of the behavior and the data
+     * @param nom
+     * @param data
+     * @throws IOException
+     */
     public void  serialization(String nom, String data) throws IOException {
         FileOutputStream outputStream ;
 
@@ -675,6 +706,14 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
        if(!nom.equals("nomFichier"))
         {sauvegarderListFichier(nom);}
     }
+
+    /**
+     * Starts a Dialog to help the user load a previously saved behavior
+     * It takes a View as a parameter (the one which called the function)
+     * It is called when a user taps on the LOAD button in Behavior Generator
+     * @param view
+     * @throws IOException
+     */
     public void onClickcharger(View view) throws IOException {
         LayoutInflater factory = LayoutInflater.from(this);
         final View alertDialogView = factory.inflate(R.layout.load_name, null);
@@ -746,6 +785,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
             } });
         adb.show();
     }
+
+    /**
+     * Loads a behavior from file
+     * It takes a String as a parameter (the name of the behavior to be loaded)
+     * It is called when a user taps on the SAVE button in Behavior Generator
+     * @param nom
+     */
     public String charger(String nom) throws IOException {
         FileInputStream FIS =null;
         String data="";
@@ -774,6 +820,13 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         }
         return data;
     }
+
+    /**
+     * Saves the list of saved behaviors
+     * It takes a String as a parameter (the list of saved files)
+     * @param nvFichier
+     * @throws IOException
+     */
     public void sauvegarderListFichier(String nvFichier) throws IOException {
 
         try{
@@ -787,6 +840,12 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
 
 
     }
+
+    /**
+     * Returns the list of names of the saved behaviors
+     * @return
+     * @throws IOException
+     */
     public String[] genererListeFichier() throws IOException {
         String s;
         s=charger("nomFichier");
@@ -799,6 +858,10 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         return rDNA;
     }
 
+    /**
+     * This AsyncTask is used to run the entire process of generating a
+     * new population asynchronously
+     */
     private class asyncNS extends AsyncTask<Void, Void, Void> {
 
         @Override
