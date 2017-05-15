@@ -1,14 +1,17 @@
 package com.example.superprojet.robobo2;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -17,56 +20,31 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.superprojet.robobo2.genome.RoboboDNASim;
-import com.example.superprojet.robobo2.genome.RoboboGene;
 import com.example.superprojet.robobo2.genome.RoboboDNA;
 import com.example.superprojet.robobo2.genome.RoboboPopulation;
-import com.mytechia.commons.framework.exception.InternalErrorException;
 import com.mytechia.robobo.framework.RoboboManager;
-
-import java.io.FileNotFoundException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
 import com.mytechia.robobo.framework.exception.ModuleNotFoundException;
-
-
-
 import com.mytechia.robobo.framework.hri.speech.production.ISpeechProductionModule;
 import com.mytechia.robobo.framework.remote_control.remotemodule.IRemoteControlModule;
 import com.mytechia.robobo.framework.remote_control.remotemodule.Status;
 import com.mytechia.robobo.framework.service.RoboboServiceHelper;
 import com.mytechia.robobo.rob.BluetoothRobInterfaceModule;
-
 import com.mytechia.robobo.rob.IRob;
-import com.mytechia.robobo.rob.MoveMTMode;
 import com.mytechia.robobo.rob.movement.IRobMovementModule;
 import com.mytechia.robobo.rob.util.RoboboDeviceSelectionDialog;
 
-
 import org.java_websocket.client.WebSocketClient;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.Callable;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 
@@ -120,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements ITestListener {
         s.putContents("Taps",i.toString());
         i = i+1;
         Log.d(TAG,s.toString());
-        //remoteModule.postStatus(s);//had to comment this
 
         return true;
 

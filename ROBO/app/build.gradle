@@ -39,5 +39,4 @@ dependencies {
     compile 'com.mytechia:robobo-rob-module:0.2.9'
     compile 'com.mytechia:robobo-rob-interface:0.2.9'
     compile 'com.android.support:design:25.1.0'
-    //compile 'com.mytechia:robobo-ros-module:0.1.1'
 }
